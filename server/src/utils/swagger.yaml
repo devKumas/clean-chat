@@ -1,0 +1,27 @@
+definitions:
+  SuccessResponse:
+    properties:
+      success:
+        type: boolean
+        default: true
+      message:
+        type: string
+      result:
+        type: object
+  FailResponse:
+    properties:
+      success:
+        type: boolean
+        default: false
+      message:
+        type: string
+      result:
+        type: object
+  Login:
+    type: object
+    required:
+      - email
+      - password
+    example:
+      email: 'admin@kumas.dev'
+      password: 'password'
