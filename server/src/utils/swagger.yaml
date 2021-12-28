@@ -17,3 +17,11 @@ definitions:
         type: string
       result:
         type: object
+  Login:
+    type: object
+    required:
+      - email
+      - password
+    example:
+      email: 'admin@kumas.dev'
+      password: 'password'

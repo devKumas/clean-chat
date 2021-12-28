@@ -2,6 +2,32 @@ import { Model, DataTypes } from 'sequelize';
 import { dbType } from '.';
 import { sequelize } from './sequelize';
 
+/**
+ * @swagger
+ *  definitions:
+ *    User:
+ *      type: object
+ *      required:
+ *        - email
+ *        - password
+ *        - name
+ *        - gender
+ *      properties:
+ *        email:
+ *          type: string
+ *        password:
+ *          type: string
+ *        name:
+ *          type: string
+ *        gender:
+ *          type: string
+ *      example:
+ *         email: "admin@kumas.dev"
+ *         password: "password"
+ *         name: "홍길동"
+ *         gender: "1"
+ */
+
 class User extends Model {
   public readonly id!: number;
   public email!: string;
