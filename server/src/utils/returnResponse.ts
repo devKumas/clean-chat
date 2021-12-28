@@ -1,13 +1,15 @@
-export const successResponse = (data: object, message: string = '') => {
+export const successResponse = (result: object, message: string = '') => {
   return {
-    data,
+    success: true,
     message,
+    result,
   };
 };
 
 export const failResponse = (message: string) => {
   return {
-    data: {},
+    success: false,
     message,
+    result: {},
   };
 };
