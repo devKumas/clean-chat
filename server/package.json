@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
-    "dev": "nodemon --exec ts-node --files src/app.ts",
-    "build": "tsc"
+    "start": "tsc && pm2 start dist/app.js",
+    "dev": "nodemon --exec ts-node --files src/app.ts"
   },
   "author": "",
   "license": "ISC",
@@ -39,6 +39,7 @@
     "node-mocks-http": "^1.11.0",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
+    "pm2": "^5.1.2",
     "sequelize": "^7.0.0-alpha.2",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0",
