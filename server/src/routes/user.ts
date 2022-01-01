@@ -1,6 +1,6 @@
 import express from 'express';
-import { isLoggedIn, isNotLoggedIn } from '../passport/middleware';
-import { getUser, postUser, postLogin, postLogout } from '../controller/user';
+import { isLoggedIn, isNotLoggedIn } from './middleware';
+import { getMyInfo, createUser, userLogin, userLogout } from '../controller/user';
 
 /**
  * @swagger
@@ -15,18 +15,17 @@ const router = express.Router();
  * paths:
  *  /user:
  *    get:
- *      summary: Select User
+ *      summary: Select My Info
  *      tags: [user]
  *      responses:
  *        "201":
  *          schema:
  *            $ref: '#/definitions/SuccessResponse'
  *        "404":
- *          description: not is loggedIn
  *          schema:
  *            $ref: '#/definitions/FailResponse'
  */
-router.get('/', isLoggedIn, getUser);
+router.get('/', isLoggedIn, getMyInfo);
 
 /**
  * @swagger
@@ -46,18 +45,17 @@ router.get('/', isLoggedIn, getUser);
  *          schema:
  *            $ref: '#/definitions/SuccessResponse'
  *        "404":
- *          description: is loggedIn
  *          schema:
  *            $ref: '#/definitions/FailResponse'
  */
-router.post('/', isNotLoggedIn, postUser);
+router.post('/', isNotLoggedIn, createUser);
 
 /**
  * @swagger
  * paths:
  *  /user/login:
  *    post:
- *      summary: Login User
+ *      summary: User Login
  *      tags: [user]
  *      parameters:
  *      - in: body
@@ -70,18 +68,17 @@ router.post('/', isNotLoggedIn, postUser);
  *          schema:
  *            $ref: '#/definitions/SuccessResponse'
  *        "404":
- *          description:
  *          schema:
  *            $ref: '#/definitions/FailResponse'
  */
-router.post('/login', isNotLoggedIn, postLogin);
+router.post('/login', isNotLoggedIn, userLogin);
 
 /**
  * @swagger
  * paths:
  *  /user/logout:
  *    get:
- *      summary: Logout User
+ *      summary: User Logout
  *      tags: [user]
  *      responses:
  *        "201":
@@ -92,6 +89,6 @@ router.post('/login', isNotLoggedIn, postLogin);
  *          schema:
  *            $ref: '#/definitions/FailResponse'
  */
-router.get('/logout', isLoggedIn, postLogout);
+router.get('/logout', isLoggedIn, userLogout);
 
 export default router;
