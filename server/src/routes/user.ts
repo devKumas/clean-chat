@@ -18,12 +18,9 @@ const router = express.Router();
  *      summary: Select My Info
  *      tags: [user]
  *      responses:
- *        "201":
+ *        "200":
  *          schema:
- *            $ref: '#/definitions/SuccessResponse'
- *        "404":
- *          schema:
- *            $ref: '#/definitions/FailResponse'
+ *            $ref: '#/definitions/Response'
  */
 router.get('/', isLoggedIn, getMyInfo);
 
@@ -43,10 +40,7 @@ router.get('/', isLoggedIn, getMyInfo);
  *      responses:
  *        "201":
  *          schema:
- *            $ref: '#/definitions/SuccessResponse'
- *        "404":
- *          schema:
- *            $ref: '#/definitions/FailResponse'
+ *            $ref: '#/definitions/Response'
  */
 router.post('/', isNotLoggedIn, createUser);
 
@@ -64,12 +58,9 @@ router.post('/', isNotLoggedIn, createUser);
  *        schema:
  *          $ref: '#/definitions/Login'
  *      responses:
- *        "201":
+ *        "200":
  *          schema:
- *            $ref: '#/definitions/SuccessResponse'
- *        "404":
- *          schema:
- *            $ref: '#/definitions/FailResponse'
+ *            $ref: '#/definitions/Response'
  */
 router.post('/login', isNotLoggedIn, userLogin);
 
@@ -81,13 +72,9 @@ router.post('/login', isNotLoggedIn, userLogin);
  *      summary: User Logout
  *      tags: [user]
  *      responses:
- *        "201":
+ *        "200":
  *          schema:
- *            $ref: '#/definitions/SuccessResponse'
- *        "404":
- *          description:
- *          schema:
- *            $ref: '#/definitions/FailResponse'
+ *            $ref: '#/definitions/Response'
  */
 router.get('/logout', isLoggedIn, userLogout);
 
