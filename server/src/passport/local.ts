@@ -18,7 +18,7 @@ export default () => {
 
           if (!user) {
             const err = new Error();
-            err.status = 404;
+            err.status = 200;
             err.info = failResponse('일치하는 이메일이 없습니다.');
 
             return done(err);
@@ -28,7 +28,7 @@ export default () => {
             return done(null, user);
           }
           const err = new Error();
-          err.status = 404;
+          err.status = 200;
           err.info = failResponse('비밀번호가 일치하지 않습니다.');
 
           return done(err);
