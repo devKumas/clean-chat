@@ -65,7 +65,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/user', userAPIRouter);
+app.use('/api/users', userAPIRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use((req, res, next) => {
