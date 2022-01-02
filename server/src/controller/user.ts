@@ -6,7 +6,6 @@ import User from '../models/user';
 import { successResponse, failResponse } from '../utils/returnResponse';
 
 export const getUser: RequestHandler = async (req, res, next) => {
-  console.log(req.params.id);
   try {
     const getUser = await User.findOne({
       where: {
