@@ -49,7 +49,7 @@ router.post('/', isNotLoggedIn, createUser);
  * paths:
  *  /user/login:
  *    post:
- *      summary: User Login
+ *      summary: Login User
  *      tags: [user]
  *      parameters:
  *      - in: body
@@ -69,7 +69,7 @@ router.post('/login', isNotLoggedIn, userLogin);
  * paths:
  *  /user/logout:
  *    get:
- *      summary: User Logout
+ *      summary: Logout User
  *      tags: [user]
  *      responses:
  *        "200":
