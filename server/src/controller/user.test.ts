@@ -23,6 +23,7 @@ beforeEach(() => {
   res = httpMocks.createResponse();
   next = jest.fn();
 });
+
 describe('getUser', () => {
   beforeEach(() => {
     req.params.id = '1';
