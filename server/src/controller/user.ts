@@ -5,9 +5,23 @@ import passport from 'passport';
 import User from '../models/user';
 import { successResponse, failResponse } from '../utils/returnResponse';
 
-export const getMyInfo: RequestHandler = (req, res) => {
-  const user = req.user;
-  return res.status(200).json(successResponse(user!, '조회 되었습니다.'));
+export const getUser: RequestHandler = async (req, res, next) => {
+  try {
+    const getUser = await User.findOne({
+      where: {
+        id: parseInt(req.params.id, 10),
+      },
+      attributes: {
+        exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt'],
+      },
+    });
+
+    if (!getUser) return res.status(404).json(failResponse('일치하는 정보가 없습니다.'));
+
+    return res.status(200).json(successResponse(getUser, '조회 되었습니다.'));
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const createUser: RequestHandler = async (req, res, next) => {
@@ -20,7 +34,7 @@ export const createUser: RequestHandler = async (req, res, next) => {
       },
     });
     if (exUser) {
-      return res.status(200).json(failResponse('이미 사용중인 아이디 입니다.'));
+      return res.status(403).json(failResponse('이미 사용중인 아이디 입니다.'));
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -29,50 +43,10 @@ export const createUser: RequestHandler = async (req, res, next) => {
       password: hashedPassword,
       name,
       gender,
+      imagePath: '',
     });
     return res.status(201).json(successResponse(newUser, '등록 되었습니다.'));
   } catch (err) {
-    console.log(err);
     next(err);
   }
-};
-
-export const userLogin: RequestHandler = (req, res, next) => {
-  passport.authenticate('local', (err: Error, user: User, info: { message: string }) => {
-    if (err) {
-      return next(err);
-    }
-
-    if (info) {
-      return res.status(401).json(info.message);
-    }
-
-    return req.login(user, async (loginErr: Error) => {
-      try {
-        if (loginErr) {
-          return next(loginErr);
-        }
-
-        if (!user) {
-          return res.status(200).json(failResponse('로그인에 실패 했습니다.'));
-        }
-        const fullUser = await User.findOne({
-          where: { id: user.id },
-          attributes: {
-            exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt'],
-          },
-        });
-        return res.status(200).json(successResponse(fullUser!, '로그인 되었습니다.'));
-      } catch (err) {
-        next(err);
-      }
-    });
-  })(req, res, next);
-};
-
-export const userLogout: RequestHandler = (req, res, next) => {
-  req.logout();
-  req.session.destroy(() => {
-    res.status(200).json(successResponse({}, '로그아웃 되었습니다.'));
-  });
 };

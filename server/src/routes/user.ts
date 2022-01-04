@@ -1,81 +1,161 @@
 import express from 'express';
-import { isLoggedIn, isNotLoggedIn } from './middleware';
-import { getMyInfo, createUser, userLogin, userLogout } from '../controller/user';
+import { isLoggedIn, isNotLoggedIn } from '../controller/middleware';
+import { getUser, createUser } from '../controller/user';
+import { loginUser, logoutUser } from '../controller/login';
+import { getFriends, addFriend, removeFriend } from '../controller/friend';
 
 /**
  * @swagger
  * tags:
- *   name: User
- *   description: User management
+ *   - name: user
+ *   - name: friend
  */
 const router = express.Router();
 
 /**
  * @swagger
  * paths:
- *  /user:
+ *  /users/friends:
  *    get:
- *      summary: Select My Info
- *      tags: [user]
+ *      summary: "친구를 조회 합니다."
+ *      tags: [friend]
  *      responses:
  *        "200":
  *          schema:
- *            $ref: '#/definitions/Response'
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "404":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
  */
-router.get('/', isLoggedIn, getMyInfo);
+router.get('/friends', isLoggedIn, getFriends);
 
 /**
  * @swagger
  * paths:
- *  /user:
+ *  /users/friends/{userId}:
  *    post:
- *      summary: Create User
+ *      summary: "친구를 추가 합니다."
+ *      tags: [friend]
+ *      parameters:
+ *      - name: "userId"
+ *        in: "path"
+ *        required: true
+ *        type: "integer"
+ *      responses:
+ *        "200":
+ *          schema:
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "403":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
+ */
+router.post('/friends/:id', isLoggedIn, addFriend);
+
+/**
+ * @swagger
+ * paths:
+ *  /users/friends/{userId}:
+ *    delete:
+ *      summary: "친구를 삭제 합니다."
+ *      tags: [friend]
+ *      parameters:
+ *      - name: "userId"
+ *        in: "path"
+ *        required: true
+ *        type: "integer"
+ *      responses:
+ *        "200":
+ *          schema:
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "403":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
+ */
+router.delete('/friends/:id', isLoggedIn, removeFriend);
+
+/**
+ * @swagger
+ * paths:
+ *  /users/{userId}:
+ *    get:
+ *      summary: "유저를 조회합니다."
+ *      tags: [user]
+ *      parameters:
+ *      - name: "userId"
+ *        in: "path"
+ *        required: true
+ *        type: "integer"
+ *      responses:
+ *        "200":
+ *          schema:
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "404":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
+ */
+router.get('/:id', getUser);
+
+/**
+ * @swagger
+ * paths:
+ *  /users:
+ *    post:
+ *      summary: "유저를 생성합니다."
  *      tags: [user]
  *      parameters:
  *      - in: body
  *        name: body
  *        required: true
  *        schema:
- *          $ref: '#/definitions/User'
+ *          $ref: "#/definitions/User"
  *      responses:
  *        "201":
  *          schema:
- *            $ref: '#/definitions/Response'
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "403":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
  */
 router.post('/', isNotLoggedIn, createUser);
 
 /**
  * @swagger
  * paths:
- *  /user/login:
+ *  /users/login:
  *    post:
- *      summary: User Login
+ *      summary: "로그인 합니다."
  *      tags: [user]
  *      parameters:
  *      - in: body
  *        name: body
  *        required: true
  *        schema:
- *          $ref: '#/definitions/Login'
+ *          $ref: "#/definitions/Login"
  *      responses:
  *        "200":
  *          schema:
- *            $ref: '#/definitions/Response'
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "401":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
  */
-router.post('/login', isNotLoggedIn, userLogin);
+router.post('/login', isNotLoggedIn, loginUser);
 
 /**
  * @swagger
  * paths:
- *  /user/logout:
+ *  /users/logout:
  *    get:
- *      summary: User Logout
+ *      summary: "로그아웃 합니다."
  *      tags: [user]
  *      responses:
  *        "200":
  *          schema:
- *            $ref: '#/definitions/Response'
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "401":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
  */
-router.get('/logout', isLoggedIn, userLogout);
+router.get('/logout', isLoggedIn, logoutUser);
 
 export default router;

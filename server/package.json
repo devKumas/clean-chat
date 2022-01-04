@@ -5,7 +5,8 @@
   "main": "app.ts",
   "scripts": {
     "start": "tsc && NODE_ENV=production PORT=8100 pm2 start dist/app.js",
-    "dev": "nodemon --exec ts-node --files src/app.ts"
+    "dev": "nodemon --exec ts-node --files src/app.ts",
+    "test": "jest --detectOpenHandles --forceExit"
   },
   "author": "",
   "license": "ISC",
@@ -54,6 +55,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
+    "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0"
   }
 }

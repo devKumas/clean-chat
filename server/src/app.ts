@@ -14,7 +14,7 @@ import path from 'path';
 
 import passportConfig from './passport';
 import { sequelize } from './models';
-const { PORT } = process.env;
+const { PORT, NODE_ENV } = process.env;
 import userAPIRouter from './routes/user';
 import { swaggerUi, specs } from './utils/swagger';
 
@@ -27,7 +27,7 @@ sequelize
   .catch(console.error);
 passportConfig();
 
-if (process.env.NODE_ENV === 'production') {
+if (NODE_ENV === 'production') {
   app.enable('trust proxy');
   app.use(morgan('combined'));
   app.use(helmet({ contentSecurityPolicy: false }));
@@ -56,7 +56,7 @@ app.use(
     proxy: true,
     cookie: {
       httpOnly: true,
-      secure: true,
+      secure: NODE_ENV ? true : false,
       sameSite: 'none',
     },
   })
@@ -65,7 +65,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/user', userAPIRouter);
+app.use('/api/users', userAPIRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use((req, res, next) => {
