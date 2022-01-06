@@ -82,7 +82,7 @@ app.use((req, res, next) => {
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (!err.status) console.error(err);
-  res.status(err.status || 500).json(err.info);
+  res.status(err.status || 500).json(err.info || err.message);
 });
 
 http.createServer(app).listen(app.get('port'), () => {
