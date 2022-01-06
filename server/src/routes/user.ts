@@ -7,8 +7,9 @@ import { getFriends, addFriend, removeFriend } from '../controller/friend';
 /**
  * @swagger
  * tags:
- *   - name: user
- *   - name: friend
+ *    - name: user
+ *    - name: login
+ *    - name: friend
  */
 const router = express.Router();
 
@@ -147,7 +148,7 @@ router.patch('/', isLoggedIn, updateUser);
  *  /users/login:
  *    post:
  *      summary: "로그인 합니다."
- *      tags: [user]
+ *      tags: [login]
  *      parameters:
  *      - in: body
  *        name: body
@@ -170,7 +171,7 @@ router.post('/login', isNotLoggedIn, loginUser);
  *  /users/logout:
  *    get:
  *      summary: "로그아웃 합니다."
- *      tags: [user]
+ *      tags: [login]
  *      responses:
  *        "200":
  *          schema:
