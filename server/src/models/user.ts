@@ -19,6 +19,7 @@ import { sequelize } from './sequelize';
  *        - password
  *        - name
  *        - gender
+ *        - imagePath
  *      properties:
  *        email:
  *          type: string
@@ -28,11 +29,15 @@ import { sequelize } from './sequelize';
  *          type: string
  *        gender:
  *          type: string
+ *        imagePath:
+ *          type: string
  *      example:
- *         email: "admin@kumas.dev"
- *         password: "password"
- *         name: "홍길동"
- *         gender: "M"
+ *        email: "admin@kumas.dev"
+ *        password: "password"
+ *        name: "홍길동"
+ *        gender: "M"
+ *        imagePath: ""
+ *
  */
 type gender = 'M' | 'F' | 'X';
 class User extends Model {

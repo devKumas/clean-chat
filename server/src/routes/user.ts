@@ -1,6 +1,6 @@
 import express from 'express';
 import { isLoggedIn, isNotLoggedIn } from '../controller/middleware';
-import { getUser, createUser } from '../controller/user';
+import { getUser, createUser, updateUser, multerUpload, uploadImage } from '../controller/user';
 import { loginUser, logoutUser } from '../controller/login';
 import { getFriends, addFriend, removeFriend } from '../controller/friend';
 
@@ -121,6 +121,29 @@ router.post('/', isNotLoggedIn, createUser);
 /**
  * @swagger
  * paths:
+ *  /users:
+ *    patch:
+ *      summary: "유저를 업데이트 합니다."
+ *      tags: [user]
+ *      parameters:
+ *      - in: body
+ *        name: body
+ *        required: true
+ *        schema:
+ *          $ref: "#/definitions/User"
+ *      responses:
+ *        "201":
+ *          schema:
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "403":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
+ */
+router.patch('/', isLoggedIn, updateUser);
+
+/**
+ * @swagger
+ * paths:
  *  /users/login:
  *    post:
  *      summary: "로그인 합니다."
@@ -157,5 +180,29 @@ router.post('/login', isNotLoggedIn, loginUser);
  *            $ref: "#/definitions/FailResponse"
  */
 router.get('/logout', isLoggedIn, logoutUser);
+
+/**
+ * @swagger
+ * paths:
+ *  /users/images:
+ *    post:
+ *      summary: "이미지를 업로드 합니다."
+ *      tags: [user]
+ *      consumes:
+ *        - multipart/form-dat
+ *      parameters:
+ *        - name: img
+ *          in: formData
+ *          required: true
+ *          type: file
+ *      responses:
+ *        "200":
+ *          schema:
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "401":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
+ */
+router.post('/images', isLoggedIn, multerUpload.single('img'), uploadImage);
 
 export default router;

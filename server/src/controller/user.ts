@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
-import passport from 'passport';
+import multer from 'multer';
+import path from 'path';
 
 import User from '../models/user';
 import { successResponse, failResponse } from '../utils/returnResponse';
@@ -46,6 +47,56 @@ export const createUser: RequestHandler = async (req, res, next) => {
       imagePath: '',
     });
     return res.status(201).json(successResponse(newUser, '등록 되었습니다.'));
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateUser: RequestHandler = async (req, res, next) => {
+  const { email, password, name, gender, imagePath }: User = req.body;
+
+  try {
+    const exUser = await User.findOne({
+      where: {
+        id: req.user!.id,
+      },
+    });
+
+    const hashedPassword = password ? await bcrypt.hash(password, 12) : undefined;
+    await User.update(
+      {
+        email: email || exUser?.email,
+        password: hashedPassword || exUser?.password,
+        name: name || exUser?.name,
+        gender: gender || exUser?.gender,
+        imagePath: imagePath || exUser?.imagePath,
+      },
+      { where: { id: req.user!.id } }
+    );
+    return res.status(201).json(successResponse({}, '수정 되었습니다.'));
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const multerUpload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename(req, file, cb) {
+      const ext = path.extname(file.originalname);
+      cb(null, path.basename(file.originalname, ext).toLowerCase() + Date.now() + ext);
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
+
+export const uploadImage: RequestHandler = async (req, res, next) => {
+  try {
+    return res
+      .status(201)
+      .json(successResponse({ url: `/img/${req.file?.filename}` }, '등록 되었습니다.'));
   } catch (err) {
     next(err);
   }
