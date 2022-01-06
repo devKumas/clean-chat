@@ -21,6 +21,13 @@ import { swaggerUi, specs } from './utils/swagger';
 dotenv.config();
 const app = express();
 
+try {
+  fs.readdirSync('uploads');
+} catch (error) {
+  console.error('uploads 폴더를 생성합니다.');
+  fs.mkdirSync('uploads');
+}
+
 sequelize
   .sync()
   .then(() => console.log('데이터베이스 연결'))
@@ -45,6 +52,7 @@ app.use(
 
 app.set('port', PORT || 8000);
 app.set('sslPort', parseInt(app.get('port')) + 1);
+app.use('/img', express.static('uploads'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
