@@ -84,6 +84,70 @@ router.delete('/friends/:id', isLoggedIn, removeFriend);
 /**
  * @swagger
  * paths:
+ *  /users/login:
+ *    post:
+ *      summary: "로그인 합니다."
+ *      tags: [login]
+ *      parameters:
+ *      - in: body
+ *        name: body
+ *        required: true
+ *        schema:
+ *          $ref: "#/definitions/Login"
+ *      responses:
+ *        "200":
+ *          schema:
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "401":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
+ */
+router.post('/login', isNotLoggedIn, loginUser);
+
+/**
+ * @swagger
+ * paths:
+ *  /users/logout:
+ *    get:
+ *      summary: "로그아웃 합니다."
+ *      tags: [login]
+ *      responses:
+ *        "200":
+ *          schema:
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "401":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
+ */
+router.get('/logout', isLoggedIn, logoutUser);
+
+/**
+ * @swagger
+ * paths:
+ *  /users/images:
+ *    post:
+ *      summary: "이미지를 업로드 합니다."
+ *      tags: [user]
+ *      consumes:
+ *        - multipart/form-dat
+ *      parameters:
+ *        - name: img
+ *          in: formData
+ *          required: true
+ *          type: file
+ *      responses:
+ *        "200":
+ *          schema:
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "401":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
+ */
+router.post('/images', isLoggedIn, multerUpload.single('img'), uploadImage);
+
+/**
+ * @swagger
+ * paths:
  *  /users/email/{userEmail}:
  *    get:
  *      summary: "userEmail을 조회합니다."
@@ -170,69 +234,5 @@ router.post('/', isNotLoggedIn, createUser);
  *            $ref: "#/definitions/FailResponse"
  */
 router.patch('/', isLoggedIn, updateUser);
-
-/**
- * @swagger
- * paths:
- *  /users/login:
- *    post:
- *      summary: "로그인 합니다."
- *      tags: [login]
- *      parameters:
- *      - in: body
- *        name: body
- *        required: true
- *        schema:
- *          $ref: "#/definitions/Login"
- *      responses:
- *        "200":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
- *        "401":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
- */
-router.post('/login', isNotLoggedIn, loginUser);
-
-/**
- * @swagger
- * paths:
- *  /users/logout:
- *    get:
- *      summary: "로그아웃 합니다."
- *      tags: [login]
- *      responses:
- *        "200":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
- *        "401":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
- */
-router.get('/logout', isLoggedIn, logoutUser);
-
-/**
- * @swagger
- * paths:
- *  /users/images:
- *    post:
- *      summary: "이미지를 업로드 합니다."
- *      tags: [user]
- *      consumes:
- *        - multipart/form-dat
- *      parameters:
- *        - name: img
- *          in: formData
- *          required: true
- *          type: file
- *      responses:
- *        "200":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
- *        "401":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
- */
-router.post('/images', isLoggedIn, multerUpload.single('img'), uploadImage);
 
 export default router;
