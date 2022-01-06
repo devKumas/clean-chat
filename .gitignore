@@ -203,4 +203,7 @@ $RECYCLE.BIN/
 .data/
 .init/
 
+# Uploads
+uploads/
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,node,react
