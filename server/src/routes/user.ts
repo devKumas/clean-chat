@@ -1,6 +1,13 @@
 import express from 'express';
 import { isLoggedIn, isNotLoggedIn } from '../controller/middleware';
-import { getUser, createUser, updateUser, multerUpload, uploadImage } from '../controller/user';
+import {
+  getUserId,
+  getUserEmail,
+  createUser,
+  updateUser,
+  multerUpload,
+  uploadImage,
+} from '../controller/user';
 import { loginUser, logoutUser } from '../controller/login';
 import { getFriends, addFriend, removeFriend } from '../controller/friend';
 
@@ -77,6 +84,28 @@ router.delete('/friends/:id', isLoggedIn, removeFriend);
 /**
  * @swagger
  * paths:
+ *  /users/email/{userEmail}:
+ *    get:
+ *      summary: "userEmail을 조회합니다."
+ *      tags: [user]
+ *      parameters:
+ *      - name: "userEmail"
+ *        in: "path"
+ *        required: true
+ *        type: "string"
+ *      responses:
+ *        "200":
+ *          schema:
+ *            $ref: "#/definitions/SuccessResponse"
+ *        "404":
+ *          schema:
+ *            $ref: "#/definitions/FailResponse"
+ */
+router.get('/email/:email', getUserEmail);
+
+/**
+ * @swagger
+ * paths:
  *  /users/{userId}:
  *    get:
  *      summary: "유저를 조회합니다."
@@ -94,7 +123,7 @@ router.delete('/friends/:id', isLoggedIn, removeFriend);
  *          schema:
  *            $ref: "#/definitions/FailResponse"
  */
-router.get('/:id', getUser);
+router.get('/:id', getUserId);
 
 /**
  * @swagger
