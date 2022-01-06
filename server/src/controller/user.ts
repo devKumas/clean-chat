@@ -6,11 +6,30 @@ import path from 'path';
 import User from '../models/user';
 import { successResponse, failResponse } from '../utils/returnResponse';
 
-export const getUser: RequestHandler = async (req, res, next) => {
+export const getUserId: RequestHandler = async (req, res, next) => {
   try {
     const getUser = await User.findOne({
       where: {
         id: parseInt(req.params.id, 10),
+      },
+      attributes: {
+        exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt'],
+      },
+    });
+
+    if (!getUser) return res.status(404).json(failResponse('일치하는 정보가 없습니다.'));
+
+    return res.status(200).json(successResponse(getUser, '조회 되었습니다.'));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserEmail: RequestHandler = async (req, res, next) => {
+  try {
+    const getUser = await User.findAll({
+      where: {
+        email: req.params.email,
       },
       attributes: {
         exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt'],
