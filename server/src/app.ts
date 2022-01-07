@@ -52,7 +52,7 @@ app.use(
 
 app.set('port', PORT || 8000);
 app.set('sslPort', parseInt(app.get('port')) + 1);
-app.use('/img', express.static('uploads'));
+app.use('/img', express.static(path.join(__dirname, '..', 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
