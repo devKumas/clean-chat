@@ -1,3 +1,7 @@
+tags:
+  - name: auth
+  - name: user
+  - name: friend
 definitions:
   SuccessResponse:
     properties:
