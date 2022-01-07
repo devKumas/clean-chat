@@ -15,7 +15,9 @@ import path from 'path';
 import passportConfig from './passport';
 import { sequelize } from './models';
 const { PORT, NODE_ENV } = process.env;
+import authAPIRouter from './routes/auth';
 import userAPIRouter from './routes/user';
+import friendAPIRouter from './routes/friend';
 import { swaggerUi, specs } from './utils/swagger';
 
 dotenv.config();
@@ -52,7 +54,7 @@ app.use(
 
 app.set('port', PORT || 8000);
 app.set('sslPort', parseInt(app.get('port')) + 1);
-app.use('/img', express.static('uploads'));
+app.use('/img', express.static(path.join(__dirname, '..', 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -73,7 +75,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/api/auth', authAPIRouter);
 app.use('/api/users', userAPIRouter);
+app.use('/api/friend', friendAPIRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use((req, res, next) => {
