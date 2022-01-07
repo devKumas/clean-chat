@@ -115,7 +115,7 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
   try {
     return res
       .status(201)
-      .json(successResponse({ imagePath: `img/${req.file?.filename}` }, '등록 되었습니다.'));
+      .json(successResponse({ imagePath: `/img/${req.file?.filename}` }, '등록 되었습니다.'));
   } catch (err) {
     next(err);
   }
