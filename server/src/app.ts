@@ -14,35 +14,38 @@ import path from 'path';
 
 import passportConfig from './passport';
 import { sequelize } from './models';
-const { PORT, NODE_ENV } = process.env;
 import authAPIRouter from './routes/auth';
 import userAPIRouter from './routes/user';
 import friendAPIRouter from './routes/friend';
 import { swaggerUi, specs } from './utils/swagger';
+import { logger, stream } from './utils/winston';
 
 dotenv.config();
+
+const { PORT, NODE_ENV } = process.env;
 const app = express();
 
 try {
   fs.readdirSync('uploads');
 } catch (error) {
-  console.error('uploads 폴더를 생성합니다.');
+  logger.error('uploads 폴더를 생성합니다');
   fs.mkdirSync('uploads');
 }
 
 sequelize
   .sync()
-  .then(() => console.log('데이터베이스 연결'))
-  .catch(console.error);
+  .then(() => logger.info('데이터 베이스가 연결 되었습니다.'))
+  .catch(logger.error);
+
 passportConfig();
 
 if (NODE_ENV === 'production') {
   app.enable('trust proxy');
-  app.use(morgan('combined'));
+  app.use(morgan('combined', { stream }));
   app.use(helmet({ contentSecurityPolicy: false }));
   app.use(hpp());
 } else {
-  app.use(morgan('dev'));
+  app.use(morgan('dev', { stream }));
 }
 
 app.use(
@@ -85,12 +88,12 @@ app.use((req, res, next) => {
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (!err.status) console.error(err);
+  if (!err.status) logger.error(err);
   res.status(err.status || 500).json(err.info || err.message);
 });
 
 http.createServer(app).listen(app.get('port'), () => {
-  console.log(`http Server is started on port ${app.get('port')}`);
+  logger.info(`http Server is started on port ${app.get('port')}`);
 });
 
 try {
@@ -107,8 +110,8 @@ try {
       .toString(),
   };
   https.createServer(option, app).listen(app.get('sslPort'), () => {
-    console.log(`https Server is started on port ${app.get('sslPort')}`);
+    logger.info(`https Server is started on port ${app.get('sslPort')}`);
   });
 } catch (error) {
-  console.error('https 오류가 발생하였습니다. https 서버는 실행되지 않습니다.');
+  logger.error('https 오류가 발생하였습니다. https 서버는 실행되지 않습니다.');
 }
