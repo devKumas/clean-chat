@@ -27,7 +27,7 @@ export const getUserId: RequestHandler = async (req, res, next) => {
 
 export const getUserEmail: RequestHandler = async (req, res, next) => {
   try {
-    const getUser = await User.findAll({
+    const getUser = await User.findOne({
       where: {
         email: req.params.email,
       },
