@@ -5,13 +5,13 @@ import User from '../models/user';
 import { successResponse } from '../utils/returnResponse';
 
 export const loginUser: RequestHandler = (req, res, next) => {
-  passport.authenticate('local', (err: Error, user: User, info: { message: string }) => {
+  passport.authenticate('local', (err: Error, user: User, info: object) => {
     if (err) {
       return next(err);
     }
 
     if (info) {
-      return res.status(401).json(info.message);
+      return res.status(401).json(info);
     }
 
     return req.login(user, async (loginErr: Error) => {

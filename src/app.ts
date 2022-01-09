@@ -89,7 +89,7 @@ app.use((req, res, next) => {
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (!err.status) logger.error(err);
-  res.status(err.status || 500).json(err.info || err.message);
+  res.status(err.status || 500).json(err.message);
 });
 
 http.createServer(app).listen(app.get('port'), () => {

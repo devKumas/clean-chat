@@ -17,21 +17,14 @@ export default () => {
           const user = await User.findOne({ where: { email } });
 
           if (!user) {
-            const err = new Error();
-            err.status = 404;
-            err.info = failResponse('일치하는 이메일이 없습니다.');
-
-            return done(err);
+            return done(null, false, failResponse('일치하는 이메일이 없습니다.'));
           }
           const result = await bcrypt.compare(password, user.password);
           if (result) {
             return done(null, user);
           }
-          const err = new Error();
-          err.status = 403;
-          err.info = failResponse('비밀번호가 일치하지 않습니다.');
 
-          return done(err);
+          return done(null, false, failResponse('비밀번호가 일치하지 않습니다.'));
         } catch (err) {
           return done(err);
         }
