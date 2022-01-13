@@ -22,8 +22,8 @@ export default () => {
       }
 
       return done(null, user);
-    } catch (err) {
-      return done(err);
+    } catch (error) {
+      return done(error);
     }
   });
 

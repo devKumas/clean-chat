@@ -12,8 +12,8 @@ export const getFriends: RequestHandler = async (req, res, next) => {
     const friends = await user!.getFriends({ attributes: ['id', 'name'] });
 
     return res.status(200).json(successResponse(friends, '조회 되었습니다.'));
-  } catch (e) {
-    next(e);
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -39,8 +39,8 @@ export const addFriend: RequestHandler = async (req, res, next) => {
 
     await user!.addFriend(parseInt(req.params.id, 10));
     return res.status(201).json(successResponse({}, '등록 되었습니다.'));
-  } catch (e) {
-    next(e);
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -58,7 +58,7 @@ export const removeFriend: RequestHandler = async (req, res, next) => {
 
     await user!.removeFriend(parseInt(req.params.id, 10));
     return res.status(201).json(successResponse({}, '삭제 되었습니다.'));
-  } catch (e) {
-    next(e);
+  } catch (error) {
+    next(error);
   }
 };
