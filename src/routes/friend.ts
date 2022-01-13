@@ -18,7 +18,7 @@ const router = express.Router();
  *          schema:
  *            $ref: "#/definitions/FailResponse"
  */
-router.get('/friends', isLoggedIn, getFriends);
+router.get('/', isLoggedIn, getFriends);
 
 /**
  * @swagger
@@ -40,7 +40,7 @@ router.get('/friends', isLoggedIn, getFriends);
  *          schema:
  *            $ref: "#/definitions/FailResponse"
  */
-router.post('/friends/:id', isLoggedIn, addFriend);
+router.post('/:id', isLoggedIn, addFriend);
 
 /**
  * @swagger
@@ -62,6 +62,6 @@ router.post('/friends/:id', isLoggedIn, addFriend);
  *          schema:
  *            $ref: "#/definitions/FailResponse"
  */
-router.delete('/friends/:id', isLoggedIn, removeFriend);
+router.delete('/:id', isLoggedIn, removeFriend);
 
 export default router;

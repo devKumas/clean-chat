@@ -80,7 +80,7 @@ app.use(passport.session());
 
 app.use('/api/auth', authAPIRouter);
 app.use('/api/users', userAPIRouter);
-app.use('/api/friend', friendAPIRouter);
+app.use('/api/friends', friendAPIRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use((req, res, next) => {
