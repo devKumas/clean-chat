@@ -66,8 +66,8 @@ export const createUser: RequestHandler = async (req, res, next) => {
       imagePath: '',
     });
     return res.status(201).json(successResponse(newUser, '등록 되었습니다.'));
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -93,8 +93,8 @@ export const updateUser: RequestHandler = async (req, res, next) => {
       { where: { id: req.user!.id } }
     );
     return res.status(201).json(successResponse({}, '수정 되었습니다.'));
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -116,7 +116,7 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
     return res
       .status(201)
       .json(successResponse({ imagePath: `/img/${req.file?.filename}` }, '등록 되었습니다.'));
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };

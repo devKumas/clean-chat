@@ -25,8 +25,8 @@ export default () => {
           }
 
           return done(null, false, failResponse('비밀번호가 일치하지 않습니다.'));
-        } catch (err) {
-          return done(err);
+        } catch (error) {
+          return done(error);
         }
       }
     )
