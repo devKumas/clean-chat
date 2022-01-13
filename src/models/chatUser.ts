@@ -22,6 +22,7 @@ ChatUser.init(
 
 export const associate = (db: dbType) => {
   db.ChatUser.belongsTo(db.ChatList);
+  db.ChatUser.belongsTo(db.User);
 };
 
 export default ChatUser;
