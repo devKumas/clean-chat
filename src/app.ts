@@ -17,6 +17,7 @@ import { sequelize } from './models';
 import authAPIRouter from './routes/auth';
 import userAPIRouter from './routes/user';
 import friendAPIRouter from './routes/friend';
+import chatAPIRouter from './routes/chat';
 import { swaggerUi, specs } from './utils/swagger';
 import { logger, stream } from './utils/winston';
 
@@ -81,6 +82,7 @@ app.use(passport.session());
 app.use('/api/auth', authAPIRouter);
 app.use('/api/users', userAPIRouter);
 app.use('/api/friend', friendAPIRouter);
+app.use('/api/chats', chatAPIRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use((req, res, next) => {

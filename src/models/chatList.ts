@@ -2,15 +2,25 @@ import { Model, DataTypes } from 'sequelize';
 import { dbType } from '.';
 import { sequelize } from './sequelize';
 
+import ChatUser from './chatUser';
+
 class ChatList extends Model {
   public readonly id!: number;
+  public group!: boolean;
+  public ChatUsers: ChatUser[] | undefined;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt!: Date;
 }
 
 ChatList.init(
-  {},
+  {
+    group: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
+    },
+  },
   {
     sequelize,
     timestamps: true,
