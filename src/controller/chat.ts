@@ -159,6 +159,7 @@ export const createChatList: RequestHandler = async (req, res, next) => {
     return res.status(201).json(successResponse(newChatList, '채팅이 생성 되었습니다.'));
   } catch (error) {
     await t.rollback();
+    console.log(error);
     next(error);
   }
 };
