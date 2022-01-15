@@ -134,11 +134,11 @@ export const createChatList: RequestHandler = async (req, res, next) => {
     });
 
     if (targetChatLists.length) {
-      return res.status(201).json(successResponse(targetChatLists, '이미 채팅방이 존재합니다.'));
+      return res.status(200).json(successResponse(targetChatLists, '이미 채팅방이 존재합니다.'));
     }
     const newChatList = await ChatList.create({}, { transaction: t });
 
-    const newChatUser = await ChatUser.create(
+    await ChatUser.create(
       {
         ChatListId: newChatList.id,
         UserId: req.user!.id,
@@ -156,7 +156,7 @@ export const createChatList: RequestHandler = async (req, res, next) => {
 
     t.commit();
 
-    return res.status(201).json(successResponse(newChatUser, '채팅이 생성 되었습니다.'));
+    return res.status(201).json(successResponse(newChatList, '채팅이 생성 되었습니다.'));
   } catch (error) {
     await t.rollback();
     next(error);
