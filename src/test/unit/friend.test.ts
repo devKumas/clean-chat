@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import * as controller from '../../controller/friend';
-
-import userModel from '../../models/user';
 import httpMocks, { MockRequest, MockResponse } from 'node-mocks-http';
+
+import * as controller from '../../controller/friend';
+import userModel from '../../models/user';
 import { successResponse, failResponse } from '../../utils/returnResponse';
-import user from '../data/user.json';
-import friends from '../data/friends.json';
+import user from '../data/user';
+import { getFriends } from '../data/friend';
 
 let req: MockRequest<Request>, res: MockResponse<Response>, next: any;
 
@@ -22,6 +22,7 @@ describe('getFriends', () => {
       user,
     });
   });
+  const { friends } = getFriends;
   it('나의 친구를 조회하고 200을 응답합니다.', async () => {
     (userModel.findOne as jest.Mock).mockReturnValue({
       getFriends: () => friends,
@@ -46,7 +47,7 @@ describe('addFriend', () => {
   it('자신의 아이디를 추가하는 경우 403을 호출합니다.', async () => {
     req = httpMocks.createRequest({
       user,
-      params: { id: 1 },
+      body: { userId: 1 },
     });
     await controller.addFriend(req, res, next);
     expect(res.statusCode).toBe(403);
@@ -54,14 +55,14 @@ describe('addFriend', () => {
     expect(res._isEndCalled()).toBeTruthy();
   });
 
-  it('없는 아이디를 추가하는 경우 403을 호출합니다.', async () => {
+  it('없는 아이디를 추가하는 경우 404을 호출합니다.', async () => {
     req = httpMocks.createRequest({
       user,
       params: { id: 2 },
     });
     (userModel.findOne as jest.Mock).mockReturnValue(null);
     await controller.addFriend(req, res, next);
-    expect(res.statusCode).toBe(403);
+    expect(res.statusCode).toBe(404);
     expect(res._getJSONData()).toStrictEqual(failResponse('존재하지 않는 아이디 입니다.'));
     expect(res._isEndCalled()).toBeTruthy();
   });
@@ -73,7 +74,7 @@ describe('addFriend', () => {
     });
     (userModel.findOne as jest.Mock)
       .mockReturnValueOnce(true)
-      .mockReturnValueOnce({ addFriend: () => friends });
+      .mockReturnValueOnce({ addFriend: () => {} });
 
     await controller.addFriend(req, res, next);
     expect(res.statusCode).toBe(201);
@@ -91,7 +92,7 @@ describe('addFriend', () => {
 });
 
 describe('removeFriend', () => {
-  it('없는 아이디를 삭제하는 경우 403을 호출합니다.', async () => {
+  it('없는 아이디를 삭제하는 경우 404을 호출합니다.', async () => {
     req = httpMocks.createRequest({
       user,
       params: { id: 2 },
@@ -100,7 +101,7 @@ describe('removeFriend', () => {
       hasFriend: () => false,
     });
     await controller.removeFriend(req, res, next);
-    expect(res.statusCode).toBe(403);
+    expect(res.statusCode).toBe(404);
     expect(res._getJSONData()).toStrictEqual(failResponse('존재하지 않는 아이디 입니다.'));
     expect(res._isEndCalled()).toBeTruthy();
   });

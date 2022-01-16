@@ -4,20 +4,6 @@ import { sequelize } from './sequelize';
 
 import ChatUser from './chatUser';
 
-/**
- * @swagger
- *  definitions:
- *    ChatList:
- *      type: object
- *      required:
- *        - group
- *      properties:
- *        group:
- *          type: string
- *        chatUser:
- *          $ref: "#/definitions/ChatUser"
- */
-
 class ChatList extends Model {
   public readonly id!: number;
   public group!: boolean;

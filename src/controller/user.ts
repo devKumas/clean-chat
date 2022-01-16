@@ -6,11 +6,13 @@ import path from 'path';
 import User from '../models/user';
 import { successResponse, failResponse } from '../utils/returnResponse';
 
-export const getUserId: RequestHandler = async (req, res, next) => {
+export const getUserById: RequestHandler = async (req, res, next) => {
+  const { userId } = req.params;
+
   try {
     const getUser = await User.findOne({
       where: {
-        id: parseInt(req.params.id, 10),
+        id: parseInt(userId, 10),
       },
       attributes: {
         exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt'],
@@ -21,15 +23,17 @@ export const getUserId: RequestHandler = async (req, res, next) => {
 
     return res.status(200).json(successResponse(getUser, '조회 되었습니다.'));
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
 
-export const getUserEmail: RequestHandler = async (req, res, next) => {
+export const getUserByEmail: RequestHandler = async (req, res, next) => {
+  const { userEmail } = req.params;
   try {
     const getUser = await User.findOne({
       where: {
-        email: req.params.email,
+        email: userEmail,
       },
       attributes: {
         exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt'],
@@ -40,6 +44,7 @@ export const getUserEmail: RequestHandler = async (req, res, next) => {
 
     return res.status(200).json(successResponse(getUser, '조회 되었습니다.'));
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -52,6 +57,7 @@ export const createUser: RequestHandler = async (req, res, next) => {
       where: {
         email,
       },
+      attributes: ['id'],
     });
     if (exUser) {
       return res.status(403).json(failResponse('이미 사용중인 아이디 입니다.'));
@@ -67,6 +73,7 @@ export const createUser: RequestHandler = async (req, res, next) => {
     });
     return res.status(201).json(successResponse(newUser, '등록 되었습니다.'));
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -79,10 +86,13 @@ export const updateUser: RequestHandler = async (req, res, next) => {
       where: {
         id: req.user!.id,
       },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deletedAt'],
+      },
     });
 
     const hashedPassword = password ? await bcrypt.hash(password, 12) : undefined;
-    await User.update(
+    const changedUser = await User.update(
       {
         email: email || exUser?.email,
         password: hashedPassword || exUser?.password,
@@ -92,8 +102,9 @@ export const updateUser: RequestHandler = async (req, res, next) => {
       },
       { where: { id: req.user!.id } }
     );
-    return res.status(201).json(successResponse({}, '수정 되었습니다.'));
+    return res.status(201).json(successResponse(changedUser, '수정 되었습니다.'));
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -117,6 +128,7 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
       .status(201)
       .json(successResponse({ imagePath: `/img/${req.file?.filename}` }, '등록 되었습니다.'));
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

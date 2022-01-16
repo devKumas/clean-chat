@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import * as controller from '../../controller/middleware';
-
 import httpMocks, { MockRequest, MockResponse } from 'node-mocks-http';
+
+import * as controller from '../../controller/middleware';
 import { failResponse } from '../../utils/returnResponse';
 
 let req: MockRequest<Request>, res: MockResponse<Response>, next: any;

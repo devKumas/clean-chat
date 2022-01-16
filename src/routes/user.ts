@@ -1,13 +1,39 @@
 import express from 'express';
 import { isLoggedIn, isNotLoggedIn } from '../controller/middleware';
 import {
-  getUserId,
-  getUserEmail,
+  getUserById,
+  getUserByEmail,
   createUser,
   updateUser,
   multerUpload,
   uploadImage,
 } from '../controller/user';
+
+/**
+ * @swagger
+ *  definitions:
+ *    CreateUser:
+ *      type: object
+ *      required:
+ *        - email
+ *        - password
+ *        - name
+ *        - gender
+ *      example:
+ *        email: "admin@kumas.dev"
+ *        password: "password"
+ *        name: "홍길동"
+ *        gender: "M"
+ *    UpdateUser
+ *      type: object
+ *      required:
+ *      example:
+ *        email: "admin@kumas.dev"
+ *        password: "password"
+ *        name: "홍길동"
+ *        gender: "M"
+ *        imagePath: "img/profile.png"
+ */
 
 const router = express.Router();
 /**
@@ -15,7 +41,7 @@ const router = express.Router();
  * paths:
  *  /users/id/{userId}:
  *    get:
- *      summary: "유저를 조회합니다."
+ *      summary: "회원을 조회합니다."
  *      tags: [user]
  *      parameters:
  *      - name: "userId"
@@ -24,19 +50,17 @@ const router = express.Router();
  *        type: "integer"
  *      responses:
  *        "200":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
+ *          description: "성공"
  *        "404":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
+ *          description: "입력 오류"
  */
-router.get('/id/:id', getUserId);
+router.get('/id/:userId', getUserById);
 /**
  * @swagger
  * paths:
  *  /users/email/{userEmail}:
  *    get:
- *      summary: "userEmail을 조회합니다."
+ *      summary: "회원을 조회합니다."
  *      tags: [user]
  *      parameters:
  *      - name: "userEmail"
@@ -45,34 +69,30 @@ router.get('/id/:id', getUserId);
  *        type: "string"
  *      responses:
  *        "200":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
+ *          description: "성공"
  *        "404":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
+ *          description: "입력 오류"
  */
-router.get('/email/:email', getUserEmail);
+router.get('/email/:userEmail', getUserByEmail);
 
 /**
  * @swagger
  * paths:
  *  /users:
  *    post:
- *      summary: "유저를 생성합니다."
+ *      summary: "회원을 생성합니다."
  *      tags: [user]
  *      parameters:
  *      - in: body
  *        name: body
  *        required: true
  *        schema:
- *          $ref: "#/definitions/User"
+ *          $ref: "#/definitions/CreateUser"
  *      responses:
  *        "201":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
- *        "403":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
+ *          description: "성공"
+ *        "404":
+ *          description: "입력 오류"
  */
 router.post('/', isNotLoggedIn, createUser);
 
@@ -81,21 +101,17 @@ router.post('/', isNotLoggedIn, createUser);
  * paths:
  *  /users:
  *    patch:
- *      summary: "유저를 업데이트 합니다."
+ *      summary: "회원 정보를 수정 합니다."
  *      tags: [user]
  *      parameters:
  *      - in: body
  *        name: body
  *        required: true
  *        schema:
- *          $ref: "#/definitions/User"
+ *          $ref: "#/definitions/UpdateUser"
  *      responses:
  *        "201":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
- *        "403":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
+ *          description: "성공"
  */
 router.patch('/', isLoggedIn, updateUser);
 
@@ -114,12 +130,8 @@ router.patch('/', isLoggedIn, updateUser);
  *          required: true
  *          type: file
  *      responses:
- *        "200":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
- *        "401":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
+ *        "201":
+ *          description: "성공"
  */
 router.post('/images', isLoggedIn, multerUpload.single('img'), uploadImage);
 

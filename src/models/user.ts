@@ -9,36 +9,6 @@ import {
 import { dbType } from '.';
 import { sequelize } from './sequelize';
 
-/**
- * @swagger
- *  definitions:
- *    User:
- *      type: object
- *      required:
- *        - email
- *        - password
- *        - name
- *        - gender
- *        - imagePath
- *      properties:
- *        email:
- *          type: string
- *        password:
- *          type: string
- *        name:
- *          type: string
- *        gender:
- *          type: string
- *        imagePath:
- *          type: string
- *      example:
- *        email: "admin@kumas.dev"
- *        password: "password"
- *        name: "홍길동"
- *        gender: "M"
- *        imagePath: ""
- *
- */
 type gender = 'M' | 'F' | 'X';
 class User extends Model {
   public readonly id!: number;

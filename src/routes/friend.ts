@@ -2,6 +2,17 @@ import express from 'express';
 import { isLoggedIn } from '../controller/middleware';
 import { getFriends, addFriend, removeFriend } from '../controller/friend';
 
+/**
+ * @swagger
+ *  definitions:
+ *    CreateFriend:
+ *      type: object
+ *      required:
+ *        - userId
+ *      example:
+ *        userId: 2
+ */
+
 const router = express.Router();
 /**
  * @swagger
@@ -12,35 +23,32 @@ const router = express.Router();
  *      tags: [friend]
  *      responses:
  *        "200":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
- *        "404":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
+ *          description: "성공"
  */
 router.get('/', isLoggedIn, getFriends);
 
 /**
  * @swagger
  * paths:
- *  /friends/{userId}:
+ *  /friends:
  *    post:
  *      summary: "친구를 추가 합니다."
  *      tags: [friend]
  *      parameters:
- *      - name: "userId"
- *        in: "path"
+ *      - in: "body"
+ *        name: "body"
  *        required: true
- *        type: "integer"
+ *        schema:
+ *          $ref: "#/definitions/CreateFriend"
  *      responses:
- *        "200":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
+ *        "201":
+ *          description: "성공"
  *        "403":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
+ *          description: "입력 오류"
+ *        "404":
+ *          description: "입력 오류"
  */
-router.post('/:id', isLoggedIn, addFriend);
+router.post('/', isLoggedIn, addFriend);
 
 /**
  * @swagger
@@ -55,12 +63,12 @@ router.post('/:id', isLoggedIn, addFriend);
  *        required: true
  *        type: "integer"
  *      responses:
- *        "200":
- *          schema:
- *            $ref: "#/definitions/SuccessResponse"
+ *        "201":
+ *          description: "성공"
  *        "403":
- *          schema:
- *            $ref: "#/definitions/FailResponse"
+ *          description: "입력 오류"
+ *        "404":
+ *          description: "입력 오류"
  */
 router.delete('/:id', isLoggedIn, removeFriend);
 

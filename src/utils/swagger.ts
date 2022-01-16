@@ -13,9 +13,9 @@ const options = {
       description: '',
     },
     host: process.env.API_HOST,
-    schemes: ['https', 'http'],
+    schemes: process.env.NODE_ENV === 'production' ? ['https', 'http'] : ['http'],
   },
-  apis: ['./src/models/*.ts', './src/routes/*.ts', './swagger.yaml'],
+  apis: ['./src/models/*.ts', './src/routes/*.ts'],
 };
 
 export const specs = swaggereJsdoc(options);
