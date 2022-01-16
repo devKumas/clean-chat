@@ -2,8 +2,6 @@ import express from 'express';
 import { isLoggedIn } from '../controller/middleware';
 import { getChatLists, createChatList, updateChatList, removeChatList } from '../controller/chat';
 
-const router = express.Router();
-
 /**
  * @swagger
  *  definitions:
@@ -16,10 +14,12 @@ const router = express.Router();
  *    UpdateChat:
  *      type: object
  *      required:
- *        - title
+ *        - chatTitle
  *      example:
- *        title: "놀부와의 대화"
+ *        chatTitle: "놀부와의 대화"
  */
+
+const router = express.Router();
 
 /**
  * @swagger
@@ -80,7 +80,7 @@ router.post('/', isLoggedIn, createChatList);
  *        "403":
  *          description: "권한 부족"
  */
-router.put('/:id', isLoggedIn, updateChatList);
+router.put('/:chatId', isLoggedIn, updateChatList);
 
 /**
  * @swagger
@@ -100,6 +100,6 @@ router.put('/:id', isLoggedIn, updateChatList);
  *        "403":
  *          description: "권한 부족"
  */
-router.delete('/:id', isLoggedIn, removeChatList);
+router.delete('/:chatId', isLoggedIn, removeChatList);
 
 export default router;
