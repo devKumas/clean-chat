@@ -165,8 +165,8 @@ export const createChatList: RequestHandler = async (req, res, next) => {
 };
 
 export const updateChatList: RequestHandler = async (req, res, next) => {
-  const { id: chatId } = req.params;
-  const { title: chatTitle } = req.body;
+  const { chatId } = req.params;
+  const { chatTitle } = req.body;
   try {
     const accessChat = await ChatUser.findOne({
       attributes: ['id'],
@@ -204,7 +204,7 @@ export const updateChatList: RequestHandler = async (req, res, next) => {
 };
 
 export const removeChatList: RequestHandler = async (req, res, next) => {
-  const { id: chatId } = req.params;
+  const { chatId } = req.params;
   try {
     const accessChat = await ChatUser.findOne({
       attributes: ['id'],
