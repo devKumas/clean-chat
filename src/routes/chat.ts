@@ -62,7 +62,7 @@ router.post('/', isLoggedIn, createChatList);
  * paths:
  *  /chats/{chatId}:
  *    put:
- *      summary: "채팅방 이름을 변경 합니다."
+ *      summary: "채팅 이름을 변경 합니다."
  *      tags: [chat]
  *      parameters:
  *      - name: "chatId"
@@ -87,7 +87,7 @@ router.put('/:chatId', isLoggedIn, updateChatList);
  * paths:
  *  /chats/{chatId}:
  *    delete:
- *      summary: "채팅방 삭제 합니다."
+ *      summary: "채팅을 삭제 합니다."
  *      tags: [chat]
  *      parameters:
  *      - name: "chatId"
