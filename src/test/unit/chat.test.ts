@@ -3,19 +3,23 @@ import httpMocks, { MockRequest, MockResponse } from 'node-mocks-http';
 
 import * as controller from '../../controller/chat';
 import userModel from '../../models/user';
+import { sequelize as sequelizeModel } from '../../models';
 import chatListModel from '../../models/chatList';
 import chatUserModel from '../../models/chatUser';
 import { successResponse, failResponse } from '../../utils/returnResponse';
 
 import user from '../data/user';
-import { getChatLists, createChatList } from '../data/chat';
+import { getChatLists, createChatList, updateChatList } from '../data/chat';
 
 let req: MockRequest<Request>, res: MockResponse<Response>, next: any;
 
 userModel.findOne = jest.fn();
 chatListModel.findAll = jest.fn();
 chatListModel.create = jest.fn();
+chatUserModel.findOne = jest.fn();
 chatUserModel.create = jest.fn();
+chatUserModel.update = jest.fn();
+sequelizeModel.transaction = jest.fn();
 
 beforeEach(() => {
   res = httpMocks.createResponse();
@@ -107,6 +111,9 @@ describe('createChatList', () => {
         userId: 2,
       },
     });
+    (sequelizeModel.transaction as jest.Mock).mockReturnValue({
+      commit: () => {},
+    });
     (userModel.findOne as jest.Mock).mockReturnValue(user);
     (chatListModel.findAll as jest.Mock).mockReturnValueOnce(userChatLists).mockReturnValueOnce([]);
     (chatListModel.create as jest.Mock).mockReturnValue(newChatList);
@@ -117,6 +124,60 @@ describe('createChatList', () => {
     expect(res._getJSONData()).toStrictEqual(
       successResponse(newChatList, '채팅이 생성 되었습니다.')
     );
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it('오류 발생시 next(err)을 호출합니다.', async () => {
+    req = httpMocks.createRequest({
+      user,
+      body: {
+        userId: 2,
+      },
+    });
+    const errorMessage = { message: 'error' };
+    const rejectPromise = Promise.reject(errorMessage);
+
+    (sequelizeModel.transaction as jest.Mock).mockReturnValue({
+      rollback: () => {},
+    });
+    (userModel.findOne as jest.Mock).mockReturnValue(rejectPromise);
+    await controller.createChatList(req, res, next);
+    expect(next).toBeCalledWith(errorMessage);
+  });
+});
+
+describe('updateChatList', () => {
+  beforeEach(() => {
+    req = httpMocks.createRequest({
+      user,
+      prams: {
+        id: 1,
+      },
+      body: {
+        title: '놀부와의 대화',
+      },
+    });
+  });
+  const { accessChat } = updateChatList;
+
+  it('채팅이 없거나 수정 권한이 없는 경우 403을 호출합니다.', async () => {
+    (chatUserModel.findOne as jest.Mock).mockReturnValue(null);
+
+    await controller.updateChatList(req, res, next);
+
+    expect(res.statusCode).toBe(403);
+    expect(res._getJSONData()).toStrictEqual(failResponse('수정 권한이 없습니다.'));
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it('수정에 성공하는 경우 201을 호출합니다', async () => {
+    (chatUserModel.findOne as jest.Mock).mockReturnValue(accessChat);
+
+    await controller.updateChatList(req, res, next);
+
+    expect(chatUserModel.update).toBeCalled();
+    expect(res.statusCode).toBe(201);
+    expect(res._getJSONData()).toStrictEqual(successResponse({}, '수정 되었습니다.'));
     expect(res._isEndCalled()).toBeTruthy();
   });
 });

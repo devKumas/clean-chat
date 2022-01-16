@@ -118,3 +118,9 @@ export const createChatList = {
     group: false,
   },
 };
+
+export const updateChatList = {
+  accessChat: {
+    id: 1,
+  },
+};
