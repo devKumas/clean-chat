@@ -4,6 +4,19 @@ import { sequelize } from './sequelize';
 
 import User from './user';
 
+/**
+ * @swagger
+ *  definitions:
+ *    ChatUser:
+ *      type: object
+ *      required:
+ *      properties:
+ *        chatTitle:
+ *          type: string
+ *        user:
+ *          $ref: "#/definitions/User"
+ */
+
 class ChatUser extends Model {
   public readonly id!: number;
   public chatTitle: string | undefined;
