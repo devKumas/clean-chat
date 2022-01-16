@@ -102,6 +102,7 @@ export const associate = (db: dbType) => {
     as: 'Users',
     foreignKey: 'friendId',
   });
+  db.User.hasMany(db.ChatUser);
 };
 
 export default User;
