@@ -202,3 +202,36 @@ export const updateChatList: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const removeChatList: RequestHandler = async (req, res, next) => {
+  const { id: chatId } = req.params;
+  try {
+    const accessChat = await ChatUser.findOne({
+      attributes: ['id'],
+      include: [
+        {
+          model: ChatList,
+          where: { id: parseInt(chatId, 10) },
+          attributes: [],
+        },
+        {
+          model: User,
+          where: { id: req.user!.id },
+          attributes: [],
+        },
+      ],
+    });
+
+    if (!accessChat) {
+      return res.status(403).json(failResponse('삭제 권한이 없습니다.'));
+    }
+
+    await ChatUser.destroy({
+      where: { id: accessChat.id },
+    });
+    return res.status(201).json(successResponse({}, '삭제 되었습니다.'));
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};

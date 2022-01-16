@@ -19,6 +19,7 @@ chatListModel.create = jest.fn();
 chatUserModel.findOne = jest.fn();
 chatUserModel.create = jest.fn();
 chatUserModel.update = jest.fn();
+chatUserModel.destroy = jest.fn();
 sequelizeModel.transaction = jest.fn();
 
 beforeEach(() => {
@@ -179,5 +180,56 @@ describe('updateChatList', () => {
     expect(res.statusCode).toBe(201);
     expect(res._getJSONData()).toStrictEqual(successResponse({}, '수정 되었습니다.'));
     expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it('오류 발생시 next(err)을 호출합니다.', async () => {
+    const errorMessage = { message: 'error' };
+    const rejectPromise = Promise.reject(errorMessage);
+
+    (chatUserModel.findOne as jest.Mock).mockReturnValue(rejectPromise);
+    await controller.updateChatList(req, res, next);
+    expect(next).toBeCalledWith(errorMessage);
+  });
+});
+
+describe('updateChatList', () => {
+  beforeEach(() => {
+    req = httpMocks.createRequest({
+      user,
+      prams: {
+        id: 1,
+      },
+    });
+  });
+  const { accessChat } = updateChatList;
+
+  it('채팅이 없거나 삭제 권한이 없는 경우 403을 호출합니다.', async () => {
+    (chatUserModel.findOne as jest.Mock).mockReturnValue(null);
+
+    await controller.removeChatList(req, res, next);
+
+    expect(res.statusCode).toBe(403);
+    expect(res._getJSONData()).toStrictEqual(failResponse('삭제 권한이 없습니다.'));
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it('삭제에 성공하는 경우 201을 호출합니다', async () => {
+    (chatUserModel.findOne as jest.Mock).mockReturnValue(accessChat);
+
+    await controller.removeChatList(req, res, next);
+
+    expect(chatUserModel.destroy).toBeCalled();
+    expect(res.statusCode).toBe(201);
+    expect(res._getJSONData()).toStrictEqual(successResponse({}, '삭제 되었습니다.'));
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it('오류 발생시 next(err)을 호출합니다.', async () => {
+    const errorMessage = { message: 'error' };
+    const rejectPromise = Promise.reject(errorMessage);
+
+    (chatUserModel.findOne as jest.Mock).mockReturnValue(rejectPromise);
+    await controller.removeChatList(req, res, next);
+    expect(next).toBeCalledWith(errorMessage);
   });
 });
