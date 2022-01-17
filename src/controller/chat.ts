@@ -68,7 +68,7 @@ export const getChats: RequestHandler = async (req, res, next) => {
 
     return res.status(200).json(successResponse(result, '조회 되었습니다.'));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 };
@@ -159,7 +159,7 @@ export const createChat: RequestHandler = async (req, res, next) => {
     return res.status(201).json(successResponse(newChatList, '채팅이 생성 되었습니다.'));
   } catch (error) {
     await t.rollback();
-    console.log(error);
+    console.error(error);
     next(error);
   }
 };
@@ -198,7 +198,7 @@ export const updateChat: RequestHandler = async (req, res, next) => {
     );
     return res.status(201).json(successResponse({}, '수정 되었습니다.'));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 };
@@ -231,7 +231,7 @@ export const removeChat: RequestHandler = async (req, res, next) => {
     });
     return res.status(201).json(successResponse({}, '삭제 되었습니다.'));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 };

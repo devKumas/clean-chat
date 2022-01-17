@@ -23,7 +23,7 @@ export const getUserById: RequestHandler = async (req, res, next) => {
 
     return res.status(200).json(successResponse(getUser, '조회 되었습니다.'));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 };
@@ -44,7 +44,7 @@ export const getUserByEmail: RequestHandler = async (req, res, next) => {
 
     return res.status(200).json(successResponse(getUser, '조회 되었습니다.'));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 };
@@ -73,7 +73,7 @@ export const createUser: RequestHandler = async (req, res, next) => {
     });
     return res.status(201).json(successResponse(newUser, '등록 되었습니다.'));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 };
@@ -104,7 +104,7 @@ export const updateUser: RequestHandler = async (req, res, next) => {
     );
     return res.status(201).json(successResponse(changedUser, '수정 되었습니다.'));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 };
@@ -128,7 +128,7 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
       .status(201)
       .json(successResponse({ imagePath: `/img/${req.file?.filename}` }, '등록 되었습니다.'));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 };
