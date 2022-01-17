@@ -51,7 +51,7 @@ if (NODE_ENV === 'production') {
 
 app.use(
   cors({
-    origin: true,
+    origin: '*',
     credentials: true,
   })
 );
@@ -64,15 +64,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   expressSession({
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     secret: process.env.COOKIE_SECRET!,
     proxy: true,
-    cookie: {
-      httpOnly: true,
-      secure: NODE_ENV ? true : false,
-      sameSite: 'none',
-    },
+    cookie: NODE_ENV
+      ? {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'none',
+        }
+      : {},
   })
 );
 

@@ -14,19 +14,13 @@ import {
  *  definitions:
  *    CreateUser:
  *      type: object
- *      required:
- *        - email
- *        - password
- *        - name
- *        - gender
  *      example:
  *        email: "admin@kumas.dev"
  *        password: "password"
  *        name: "홍길동"
  *        gender: "M"
- *    UpdateUser
+ *    UpdateUser:
  *      type: object
- *      required:
  *      example:
  *        email: "admin@kumas.dev"
  *        password: "password"

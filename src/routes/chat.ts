@@ -7,14 +7,10 @@ import { getChatLists, createChatList, updateChatList, removeChatList } from '..
  *  definitions:
  *    CreateChat:
  *      type: object
- *      required:
- *        - userId
  *      example:
  *        userId: 2
  *    UpdateChat:
  *      type: object
- *      required:
- *        - chatTitle
  *      example:
  *        chatTitle: "놀부와의 대화"
  */
