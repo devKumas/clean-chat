@@ -7,9 +7,6 @@ import { loginUser, logoutUser } from '../controller/login';
  *  definitions:
  *    Login:
  *      type: object
- *      required:
- *        - email
- *        - password
  *      example:
  *        email: 'admin@kumas.dev'
  *        password: 'password'

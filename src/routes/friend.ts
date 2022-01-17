@@ -7,8 +7,6 @@ import { getFriends, addFriend, removeFriend } from '../controller/friend';
  *  definitions:
  *    CreateFriend:
  *      type: object
- *      required:
- *        - userId
  *      example:
  *        userId: 2
  */
