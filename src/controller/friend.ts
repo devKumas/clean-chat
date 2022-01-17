@@ -9,9 +9,11 @@ export const getFriends: RequestHandler = async (req, res, next) => {
       where: { id: req.user!.id },
     });
 
-    const friends = (await user!.getFriends({ attributes: ['id', 'name'] })).map(({ id, name }) => {
-      return { id, name };
-    });
+    const friends = (await user!.getFriends({ attributes: ['id', 'name', 'imagePath'] })).map(
+      ({ id, name, imagePath }) => {
+        return { id, name, imagePath };
+      }
+    );
 
     return res.status(200).json(successResponse(friends, '조회 되었습니다.'));
   } catch (error) {
