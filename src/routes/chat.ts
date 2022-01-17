@@ -1,6 +1,6 @@
 import express from 'express';
 import { isLoggedIn } from '../controller/middleware';
-import { getChatLists, createChatList, updateChatList, removeChatList } from '../controller/chat';
+import { getChats, createChat, updateChat, removeChat } from '../controller/chat';
 
 /**
  * @swagger
@@ -28,7 +28,7 @@ const router = express.Router();
  *        "200":
  *          description: "성공"
  */
-router.get('/', isLoggedIn, getChatLists);
+router.get('/', isLoggedIn, getChats);
 
 /**
  * @swagger
@@ -51,7 +51,7 @@ router.get('/', isLoggedIn, getChatLists);
  *        "404":
  *          description: "입력 오류"
  */
-router.post('/', isLoggedIn, createChatList);
+router.post('/', isLoggedIn, createChat);
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ router.post('/', isLoggedIn, createChatList);
  *        "403":
  *          description: "권한 부족"
  */
-router.put('/:chatId', isLoggedIn, updateChatList);
+router.put('/:chatId', isLoggedIn, updateChat);
 
 /**
  * @swagger
@@ -96,6 +96,6 @@ router.put('/:chatId', isLoggedIn, updateChatList);
  *        "403":
  *          description: "권한 부족"
  */
-router.delete('/:chatId', isLoggedIn, removeChatList);
+router.delete('/:chatId', isLoggedIn, removeChat);
 
 export default router;

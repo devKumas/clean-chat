@@ -7,7 +7,7 @@ import ChatUser from '../models/chatUser';
 import User from '../models/user';
 import { successResponse, failResponse } from '../utils/returnResponse';
 
-export const getChatLists: RequestHandler = async (req, res, next) => {
+export const getChats: RequestHandler = async (req, res, next) => {
   try {
     // 유저의 모든 채팅방을 호출.
     const chatLists = await ChatList.findAll({
@@ -73,7 +73,7 @@ export const getChatLists: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const createChatList: RequestHandler = async (req, res, next) => {
+export const createChat: RequestHandler = async (req, res, next) => {
   const { userId } = req.body;
   const t = await sequelize.transaction();
 
@@ -164,7 +164,7 @@ export const createChatList: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const updateChatList: RequestHandler = async (req, res, next) => {
+export const updateChat: RequestHandler = async (req, res, next) => {
   const { chatId } = req.params;
   const { chatTitle } = req.body;
   try {
@@ -203,7 +203,7 @@ export const updateChatList: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const removeChatList: RequestHandler = async (req, res, next) => {
+export const removeChat: RequestHandler = async (req, res, next) => {
   const { chatId } = req.params;
   try {
     const accessChat = await ChatUser.findOne({
