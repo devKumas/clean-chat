@@ -1,6 +1,7 @@
 import express from 'express';
 import { isLoggedIn } from '../controller/middleware';
 import { getChats, createChat, updateChat, removeChat } from '../controller/chat';
+import { getMessages, createMessage } from '../controller/message';
 
 /**
  * @swagger
@@ -16,6 +17,10 @@ import { getChats, createChat, updateChat, removeChat } from '../controller/chat
  */
 
 const router = express.Router();
+
+router.get('/:chatId/messages', isLoggedIn, getMessages);
+
+router.post('/:chatId/messages', isLoggedIn, createMessage);
 
 /**
  * @swagger
