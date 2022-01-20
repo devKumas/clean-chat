@@ -1,7 +1,7 @@
 import express from 'express';
 import { isLoggedIn } from '../controller/middleware';
 import { getChats, createChat, updateChat, removeChat } from '../controller/chat';
-import { getMessages, createMessage } from '../controller/message';
+import { getMessages, createMessage, removeMessage } from '../controller/message';
 
 /**
  * @swagger
@@ -14,13 +14,13 @@ import { getMessages, createMessage } from '../controller/message';
  *      type: object
  *      example:
  *        chatTitle: "놀부와의 대화"
+ *    CreateMessage:
+ *      type: object
+ *      example:
+ *        message: "안녕하세요"
  */
 
 const router = express.Router();
-
-router.get('/:chatId/messages', isLoggedIn, getMessages);
-
-router.post('/:chatId/messages', isLoggedIn, createMessage);
 
 /**
  * @swagger
@@ -102,5 +102,79 @@ router.put('/:chatId', isLoggedIn, updateChat);
  *          description: "권한 부족"
  */
 router.delete('/:chatId', isLoggedIn, removeChat);
+
+/**
+ * @swagger
+ * paths:
+ *  /chats/{chatId}/message:
+ *    get:
+ *      summary: "메시지를 조회합니다."
+ *      tags: [chat]
+ *      parameters:
+ *      - name: "chatId"
+ *        in: "path"
+ *        required: true
+ *        type: "string"
+ *      responses:
+ *        "200":
+ *          description: "성공"
+ *        "403":
+ *          description: "권한 부족"
+ */
+router.get('/:chatId/messages', isLoggedIn, getMessages);
+
+/**
+ * @swagger
+ * paths:
+ *  /chats/{chatId}/message:
+ *    post:
+ *      summary: "메시지를 등록합니다."
+ *      tags: [chat]
+ *      parameters:
+ *      - name: "chatId"
+ *        in: "path"
+ *        required: true
+ *        type: "string"
+ *      - in: "body"
+ *        name: "body"
+ *        required: true
+ *        schema:
+ *          $ref: "#/definitions/CreateMessage"
+ *      responses:
+ *        "201":
+ *          description: "성공"
+ *        "403":
+ *          description: "권한 부족"
+ */
+router.post('/:chatId/messages', isLoggedIn, createMessage);
+
+/**
+ * @swagger
+ * paths:
+ *  /chats/{chatId}/message/{messageId}:
+ *    post:
+ *      summary: "메시지를 삭제 합니다."
+ *      tags: [chat]
+ *      parameters:
+ *      - name: "chatId"
+ *        in: "path"
+ *        required: true
+ *        type: "string"
+ *      - in: "body"
+ *        name: "body"
+ *        required: true
+ *        schema:
+ *          $ref: "#/definitions/CreateMessage"
+ *      - name: "messageId"
+ *        in: "path"
+ *        required: true
+ *        type: "string"
+ *      responses:
+ *        "201":
+ *          description: "성공"
+ *        "403":
+ *          description: "권한 부족"
+ */
+router.delete('/:chatId/messages/:messageId', isLoggedIn, removeMessage);
 
 export default router;

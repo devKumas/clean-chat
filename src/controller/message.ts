@@ -29,7 +29,7 @@ export const getMessages: RequestHandler = async (req, res, next) => {
         },
         {
           model: ChatContent,
-          attributes: ['id', 'content', 'imagePath'],
+          attributes: ['id', 'content', 'imagePath', 'delete'],
           include: [
             {
               model: User,
@@ -40,10 +40,9 @@ export const getMessages: RequestHandler = async (req, res, next) => {
       ],
     });
     if (!chatList.length) {
-      res.status(403).json(failResponse('채팅에 참여 중이 아닙니다.'));
+      return res.status(403).json(failResponse('권한이 없습니다.'));
     }
-
-    res.status(200).json(successResponse(chatList, '조회 되었습니다.'));
+    return res.status(200).json(successResponse(chatList, '조회 되었습니다.'));
   } catch (error) {
     console.error(error);
     next(error);
@@ -75,7 +74,7 @@ export const createMessage: RequestHandler = async (req, res, next) => {
       ],
     });
     if (!chatList.length) {
-      res.status(403).json(failResponse('채팅에 참여 중이 아닙니다.'));
+      return res.status(403).json(failResponse('권한이 없습니다.'));
     }
 
     await ChatContent.create({
@@ -84,9 +83,46 @@ export const createMessage: RequestHandler = async (req, res, next) => {
       UserId: req.user!.id,
     });
 
-    res.status(201).json(successResponse({}, '등록 되었습니다.'));
+    return res.status(201).json(successResponse({}, '등록 되었습니다.'));
   } catch (error) {
     console.error(error);
+    next(error);
+  }
+};
+
+export const removeMessage: RequestHandler = async (req, res, next) => {
+  const { messageId } = req.params;
+  try {
+    // 메시지 삭제 권한 체크
+    const message = await ChatContent.findOne({
+      where: { id: messageId },
+      include: [
+        {
+          model: User,
+          attributes: ['id'],
+          where: { id: req.user!.id },
+        },
+      ],
+    });
+
+    if (!message || message.delete) {
+      return res.status(403).json(failResponse('권한이 없습니다.'));
+    }
+
+    await ChatContent.update(
+      {
+        content: null,
+        imagePath: null,
+        delete: true,
+      },
+      {
+        where: { id: message!.id },
+      }
+    );
+
+    return res.status(201).json(successResponse({}, '삭제 되었습니다.'));
+  } catch (error) {
+    console.log(error);
     next(error);
   }
 };
