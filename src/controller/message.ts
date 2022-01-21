@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+import { Op } from 'sequelize';
 import ChatContent from '../models/chatContent';
 import ChatList from '../models/chatList';
 import ChatUser from '../models/chatUser';
@@ -8,12 +9,15 @@ import { successResponse, failResponse } from '../utils/returnResponse';
 
 export const getMessages: RequestHandler = async (req, res, next) => {
   const { chatId } = req.params;
+  const { messageId } = req.query;
+
+  const where = messageId ? { id: { [Op.lt]: messageId } } : {};
+
   try {
     // 채팅에 참여 중인지 체크.
     const chatList = await ChatList.findAll({
       where: { id: chatId },
       attributes: ['id'],
-      order: [[ChatContent, 'createdAt', 'desc']],
       include: [
         {
           model: ChatUser,
@@ -30,12 +34,15 @@ export const getMessages: RequestHandler = async (req, res, next) => {
         {
           model: ChatContent,
           attributes: ['id', 'content', 'imagePath', 'delete'],
+          where,
           include: [
             {
               model: User,
               attributes: ['id', 'name'],
             },
           ],
+          limit: 100,
+          order: [['createdAt', 'desc']],
         },
       ],
     });

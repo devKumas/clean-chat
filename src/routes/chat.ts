@@ -106,7 +106,7 @@ router.delete('/:chatId', isLoggedIn, removeChat);
 /**
  * @swagger
  * paths:
- *  /chats/{chatId}/message:
+ *  /chats/{chatId}/messages:
  *    get:
  *      summary: "메시지를 조회합니다."
  *      tags: [chat]
@@ -114,6 +114,10 @@ router.delete('/:chatId', isLoggedIn, removeChat);
  *      - name: "chatId"
  *        in: "path"
  *        required: true
+ *        type: "string"
+ *      - name: "messageId"
+ *        in: "query"
+ *        required: false
  *        type: "string"
  *      responses:
  *        "200":
@@ -126,7 +130,7 @@ router.get('/:chatId/messages', isLoggedIn, getMessages);
 /**
  * @swagger
  * paths:
- *  /chats/{chatId}/message:
+ *  /chats/{chatId}/messages:
  *    post:
  *      summary: "메시지를 등록합니다."
  *      tags: [chat]
@@ -151,7 +155,7 @@ router.post('/:chatId/messages', isLoggedIn, createMessage);
 /**
  * @swagger
  * paths:
- *  /chats/{chatId}/message/{messageId}:
+ *  /chats/{chatId}/messages/{messageId}:
  *    post:
  *      summary: "메시지를 삭제 합니다."
  *      tags: [chat]

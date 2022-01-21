@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import { Op } from 'sequelize';
 
 import { sequelize } from '../models';
+import ChatContent from '../models/chatContent';
 import ChatList from '../models/chatList';
 import ChatUser from '../models/chatUser';
 import User from '../models/user';
@@ -11,6 +12,7 @@ export const getChats: RequestHandler = async (req, res, next) => {
   try {
     // 유저의 모든 채팅방을 호출.
     const chatLists = await ChatList.findAll({
+      attributes: ['id'],
       include: [
         {
           model: ChatUser,
@@ -24,8 +26,19 @@ export const getChats: RequestHandler = async (req, res, next) => {
             },
           ],
         },
+        {
+          model: ChatContent,
+          attributes: ['id', 'content', 'imagePath', 'delete'],
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'name'],
+            },
+          ],
+          order: [['createdAt', 'desc']],
+          limit: 1,
+        },
       ],
-      attributes: ['id'],
     });
 
     // 채팅방에 존재하는 유저들의 id를 호출하여 Map 형식으로 변환
@@ -61,9 +74,10 @@ export const getChats: RequestHandler = async (req, res, next) => {
       }, new Map());
 
     // 전달할 값을 가공.
-    const result = chatLists.map(({ id, ChatUsers }) => {
+    const result = chatLists.map(({ id, ChatUsers, ChatContents }) => {
       const { chatTitle } = ChatUsers![0];
-      return { id, chatTitle, chatUsers: chatUsers.get(id) };
+      const chatContent = ChatContents![0];
+      return { id, chatTitle, ChatContents, chatUsers: chatUsers.get(id) };
     });
 
     return res.status(200).json(successResponse(result, '조회 되었습니다.'));
