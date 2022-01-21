@@ -3,11 +3,13 @@ import { dbType } from '.';
 import { sequelize } from './sequelize';
 
 import ChatUser from './chatUser';
+import ChatContent from './chatContent';
 
 class ChatList extends Model {
   public readonly id!: number;
   public group!: boolean;
   public ChatUsers: ChatUser[] | undefined;
+  public ChatContents: ChatContent[] | undefined;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt!: Date;

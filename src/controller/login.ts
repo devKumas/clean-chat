@@ -28,7 +28,7 @@ export const loginUser: RequestHandler = (req, res, next) => {
         });
         return res.status(200).json(successResponse(fullUser!, '로그인 되었습니다.'));
       } catch (error) {
-        console.log(error);
+        console.error(error);
         next(error);
       }
     });

@@ -39,7 +39,7 @@ describe('getChatLists', () => {
       .mockReturnValueOnce(chatLists)
       .mockReturnValueOnce(chatUsers);
 
-    await controller.getChatLists(req, res, next);
+    await controller.getChats(req, res, next);
     expect(res.statusCode).toBe(200);
     expect(res._getJSONData()).toStrictEqual(successResponse(chatResult, '조회 되었습니다.'));
     expect(res._isEndCalled()).toBeTruthy();
@@ -49,7 +49,7 @@ describe('getChatLists', () => {
     const errorMessage = { message: 'error' };
     const rejectPromise = Promise.reject(errorMessage);
     (chatListModel.findAll as jest.Mock).mockReturnValue(rejectPromise);
-    await controller.getChatLists(req, res, next);
+    await controller.getChats(req, res, next);
     expect(next).toBeCalledWith(errorMessage);
   });
 });
@@ -64,7 +64,7 @@ describe('createChatList', () => {
       },
     });
 
-    await controller.createChatList(req, res, next);
+    await controller.createChat(req, res, next);
     expect(res.statusCode).toBe(403);
     expect(res._getJSONData()).toStrictEqual(failResponse('자신과 채팅 할 수 없습니다.'));
     expect(res._isEndCalled()).toBeTruthy();
@@ -79,7 +79,7 @@ describe('createChatList', () => {
     });
     (userModel.findOne as jest.Mock).mockReturnValue(null);
 
-    await controller.createChatList(req, res, next);
+    await controller.createChat(req, res, next);
     expect(res.statusCode).toBe(404);
     expect(res._getJSONData()).toStrictEqual(failResponse('일치하는 회원이 없습니다.'));
     expect(res._isEndCalled()).toBeTruthy();
@@ -96,7 +96,7 @@ describe('createChatList', () => {
     (chatListModel.findAll as jest.Mock)
       .mockReturnValueOnce(userChatLists)
       .mockReturnValueOnce(targetChatLists);
-    await controller.createChatList(req, res, next);
+    await controller.createChat(req, res, next);
 
     expect(res.statusCode).toBe(200);
     expect(res._getJSONData()).toStrictEqual(
@@ -119,7 +119,7 @@ describe('createChatList', () => {
     (chatListModel.findAll as jest.Mock).mockReturnValueOnce(userChatLists).mockReturnValueOnce([]);
     (chatListModel.create as jest.Mock).mockReturnValue(newChatList);
 
-    await controller.createChatList(req, res, next);
+    await controller.createChat(req, res, next);
 
     expect(res.statusCode).toBe(201);
     expect(res._getJSONData()).toStrictEqual(
@@ -142,7 +142,7 @@ describe('createChatList', () => {
       rollback: () => {},
     });
     (userModel.findOne as jest.Mock).mockReturnValue(rejectPromise);
-    await controller.createChatList(req, res, next);
+    await controller.createChat(req, res, next);
     expect(next).toBeCalledWith(errorMessage);
   });
 });
@@ -164,7 +164,7 @@ describe('updateChatList', () => {
   it('채팅이 없거나 수정 권한이 없는 경우 403을 호출합니다.', async () => {
     (chatUserModel.findOne as jest.Mock).mockReturnValue(null);
 
-    await controller.updateChatList(req, res, next);
+    await controller.updateChat(req, res, next);
 
     expect(res.statusCode).toBe(403);
     expect(res._getJSONData()).toStrictEqual(failResponse('수정 권한이 없습니다.'));
@@ -174,7 +174,7 @@ describe('updateChatList', () => {
   it('수정에 성공하는 경우 201을 호출합니다', async () => {
     (chatUserModel.findOne as jest.Mock).mockReturnValue(accessChat);
 
-    await controller.updateChatList(req, res, next);
+    await controller.updateChat(req, res, next);
 
     expect(chatUserModel.update).toBeCalled();
     expect(res.statusCode).toBe(201);
@@ -187,7 +187,7 @@ describe('updateChatList', () => {
     const rejectPromise = Promise.reject(errorMessage);
 
     (chatUserModel.findOne as jest.Mock).mockReturnValue(rejectPromise);
-    await controller.updateChatList(req, res, next);
+    await controller.updateChat(req, res, next);
     expect(next).toBeCalledWith(errorMessage);
   });
 });
@@ -206,7 +206,7 @@ describe('updateChatList', () => {
   it('채팅이 없거나 삭제 권한이 없는 경우 403을 호출합니다.', async () => {
     (chatUserModel.findOne as jest.Mock).mockReturnValue(null);
 
-    await controller.removeChatList(req, res, next);
+    await controller.removeChat(req, res, next);
 
     expect(res.statusCode).toBe(403);
     expect(res._getJSONData()).toStrictEqual(failResponse('삭제 권한이 없습니다.'));
@@ -216,7 +216,7 @@ describe('updateChatList', () => {
   it('삭제에 성공하는 경우 201을 호출합니다', async () => {
     (chatUserModel.findOne as jest.Mock).mockReturnValue(accessChat);
 
-    await controller.removeChatList(req, res, next);
+    await controller.removeChat(req, res, next);
 
     expect(chatUserModel.destroy).toBeCalled();
     expect(res.statusCode).toBe(201);
@@ -229,7 +229,7 @@ describe('updateChatList', () => {
     const rejectPromise = Promise.reject(errorMessage);
 
     (chatUserModel.findOne as jest.Mock).mockReturnValue(rejectPromise);
-    await controller.removeChatList(req, res, next);
+    await controller.removeChat(req, res, next);
     expect(next).toBeCalledWith(errorMessage);
   });
 });
