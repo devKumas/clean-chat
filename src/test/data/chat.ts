@@ -62,12 +62,36 @@ export const getChatLists = {
           chatTitle: null,
         },
       ],
+      ChatContents: [
+        {
+          id: 1,
+          content: '안녕하세요',
+          imagePath: '',
+          delete: null,
+          User: {
+            id: 1,
+            name: '홍길동',
+          },
+        },
+      ],
     },
     {
       id: 2,
       ChatUsers: [
         {
           chatTitle: null,
+        },
+      ],
+      ChatContents: [
+        {
+          id: 1,
+          content: '안녕하세요',
+          imagePath: '',
+          delete: null,
+          User: {
+            id: 1,
+            name: '홍길동',
+          },
         },
       ],
     },
@@ -106,6 +130,18 @@ export const getChatLists = {
           name: '흥부',
         },
       ],
+      ChatContents: [
+        {
+          id: 1,
+          content: '안녕하세요',
+          imagePath: '',
+          delete: null,
+          User: {
+            id: 1,
+            name: '홍길동',
+          },
+        },
+      ],
     },
     {
       id: 2,
@@ -114,6 +150,18 @@ export const getChatLists = {
         {
           id: 3,
           name: '놀부',
+        },
+      ],
+      ChatContents: [
+        {
+          id: 1,
+          content: '안녕하세요',
+          imagePath: '',
+          delete: null,
+          User: {
+            id: 1,
+            name: '홍길동',
+          },
         },
       ],
     },
