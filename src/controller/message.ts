@@ -42,7 +42,7 @@ export const getMessages: RequestHandler = async (req, res, next) => {
             },
           ],
           limit: 100,
-          order: [['createdAt', 'desc']],
+          order: [['id', 'desc']],
         },
       ],
     });

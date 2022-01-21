@@ -35,7 +35,7 @@ export const getChats: RequestHandler = async (req, res, next) => {
               attributes: ['id', 'name'],
             },
           ],
-          order: [['createdAt', 'desc']],
+          order: [['id', 'desc']],
           limit: 1,
         },
       ],
