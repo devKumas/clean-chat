@@ -34,7 +34,7 @@ try {
 }
 
 sequelize
-  .sync()
+  .sync({ alter: true })
   .then(() => logger.info('데이터 베이스가 연결 되었습니다.'))
   .catch(logger.error);
 
