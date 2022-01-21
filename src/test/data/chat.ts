@@ -12,6 +12,18 @@ export default [
         },
       },
     ],
+    ChatContents: [
+      {
+        id: 1,
+        content: '안녕하세요',
+        imagePath: '',
+        delete: null,
+        User: {
+          id: 1,
+          name: '홍길동',
+        },
+      },
+    ],
   },
   {
     id: 2,
@@ -23,6 +35,18 @@ export default [
         User: {
           id: 3,
           name: '놀부',
+        },
+      },
+    ],
+    ChatContents: [
+      {
+        id: 1,
+        content: '안녕하세요',
+        imagePath: '',
+        delete: null,
+        User: {
+          id: 1,
+          name: '홍길동',
         },
       },
     ],
