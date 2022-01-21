@@ -76,7 +76,6 @@ export const getChats: RequestHandler = async (req, res, next) => {
     // 전달할 값을 가공.
     const result = chatLists.map(({ id, ChatUsers, ChatContents }) => {
       const { chatTitle } = ChatUsers![0];
-      const chatContent = ChatContents![0];
       return { id, chatTitle, ChatContents, chatUsers: chatUsers.get(id) };
     });
 
