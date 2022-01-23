@@ -1,12 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 import { dbType } from '.';
 import { sequelize } from './sequelize';
+import User from './user';
 
 class ChatContent extends Model {
   public readonly id!: number;
   public content: string | undefined;
   public imagePath: string | undefined;
-  public delete!: boolean | undefined;
+  public deleted!: boolean | undefined;
+  public User!: User | undefined;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -21,7 +23,7 @@ ChatContent.init(
       type: DataTypes.STRING(30),
       allowNull: true,
     },
-    delete: {
+    deleted: {
       type: DataTypes.BOOLEAN,
     },
   },

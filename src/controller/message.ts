@@ -112,7 +112,7 @@ export const removeMessage: RequestHandler = async (req, res, next) => {
       ],
     });
 
-    if (!message || message.delete) {
+    if (!message || message.deleted) {
       return res.status(403).json(failResponse('권한이 없습니다.'));
     }
 

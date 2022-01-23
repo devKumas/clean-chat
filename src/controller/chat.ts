@@ -28,7 +28,7 @@ export const getChats: RequestHandler = async (req, res, next) => {
         },
         {
           model: ChatContent,
-          attributes: ['id', 'content', 'imagePath', 'delete'],
+          attributes: ['id', 'content', 'imagePath', 'deleted', 'UserId'],
           include: [
             {
               model: User,
@@ -76,8 +76,10 @@ export const getChats: RequestHandler = async (req, res, next) => {
     // 전달할 값을 가공.
     const result = chatLists.map(({ id, ChatUsers, ChatContents }) => {
       const { chatTitle } = ChatUsers![0];
-      const chatContent = ChatContents![0];
-      return { id, chatTitle, ChatContents, chatUsers: chatUsers.get(id) };
+      const ChatContent = ChatContents?.map(({ id, content, imagePath, deleted, User }) => {
+        return { id, content, imagePath, deleted, User };
+      });
+      return { id, chatTitle, ChatContent: ChatContent![0], chatUsers: chatUsers.get(id) };
     });
 
     return res.status(200).json(successResponse(result, '조회 되었습니다.'));
