@@ -33,7 +33,7 @@ export const getMessages: RequestHandler = async (req, res, next) => {
         },
         {
           model: ChatContent,
-          attributes: ['id', 'content', 'imagePath', 'delete'],
+          attributes: ['id', 'content', 'imagePath', 'deleted'],
           where,
           include: [
             {
