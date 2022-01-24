@@ -84,13 +84,13 @@ export const createMessage: RequestHandler = async (req, res, next) => {
       return res.status(403).json(failResponse('권한이 없습니다.'));
     }
 
-    await ChatContent.create({
+    const msg = await ChatContent.create({
       content: message,
       ChatListId: chatId,
       UserId: req.user!.id,
     });
 
-    return res.status(201).json(successResponse({}, '등록 되었습니다.'));
+    return res.status(201).json(successResponse(msg, '등록 되었습니다.'));
   } catch (error) {
     console.error(error);
     next(error);
@@ -120,7 +120,7 @@ export const removeMessage: RequestHandler = async (req, res, next) => {
       {
         content: null,
         imagePath: null,
-        delete: true,
+        deleted: true,
       },
       {
         where: { id: message!.id },

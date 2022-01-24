@@ -156,7 +156,7 @@ router.post('/:chatId/messages', isLoggedIn, createMessage);
  * @swagger
  * paths:
  *  /chats/{chatId}/messages/{messageId}:
- *    post:
+ *    delete:
  *      summary: "메시지를 삭제 합니다."
  *      tags: [chat]
  *      parameters:
@@ -164,11 +164,6 @@ router.post('/:chatId/messages', isLoggedIn, createMessage);
  *        in: "path"
  *        required: true
  *        type: "string"
- *      - in: "body"
- *        name: "body"
- *        required: true
- *        schema:
- *          $ref: "#/definitions/CreateMessage"
  *      - name: "messageId"
  *        in: "path"
  *        required: true
