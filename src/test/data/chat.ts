@@ -67,7 +67,7 @@ export const getChatLists = {
           id: 1,
           content: '안녕하세요',
           imagePath: '',
-          delete: null,
+          deleted: null,
           User: {
             id: 1,
             name: '홍길동',
@@ -87,7 +87,7 @@ export const getChatLists = {
           id: 1,
           content: '안녕하세요',
           imagePath: '',
-          delete: null,
+          deleted: null,
           User: {
             id: 1,
             name: '홍길동',
@@ -124,44 +124,40 @@ export const getChatLists = {
     {
       id: 1,
       chatTitle: null,
+      ChatContent: {
+        id: 1,
+        content: '안녕하세요',
+        imagePath: '',
+        deleted: null,
+        User: {
+          id: 1,
+          name: '홍길동',
+        },
+      },
       chatUsers: [
         {
           id: 2,
           name: '흥부',
         },
       ],
-      ChatContents: [
-        {
-          id: 1,
-          content: '안녕하세요',
-          imagePath: '',
-          delete: null,
-          User: {
-            id: 1,
-            name: '홍길동',
-          },
-        },
-      ],
     },
     {
       id: 2,
       chatTitle: null,
+      ChatContent: {
+        id: 1,
+        content: '안녕하세요',
+        imagePath: '',
+        deleted: null,
+        User: {
+          id: 1,
+          name: '홍길동',
+        },
+      },
       chatUsers: [
         {
           id: 3,
           name: '놀부',
-        },
-      ],
-      ChatContents: [
-        {
-          id: 1,
-          content: '안녕하세요',
-          imagePath: '',
-          delete: null,
-          User: {
-            id: 1,
-            name: '홍길동',
-          },
         },
       ],
     },
