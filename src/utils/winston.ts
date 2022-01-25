@@ -25,14 +25,6 @@ const logger = winston.createLogger({
       zippedArchive: true,
     }),
     new winstonDaily({
-      level: 'warn',
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir + '/warn',
-      filename: `%DATE%.warn.log`,
-      maxFiles: 30,
-      zippedArchive: true,
-    }),
-    new winstonDaily({
       level: 'error',
       datePattern: 'YYYY-MM-DD',
       dirname: logDir + '/error',
