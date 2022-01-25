@@ -48,13 +48,11 @@ export const updateUser = {
     gender: 'M',
     imagePath: '',
   },
-  changedUser: {
-    exUser: {
-      id: 1,
-      email: 'admin@kumas.dev',
-      name: '홍길동',
-      gender: 'M',
-      imagePath: '',
-    },
+  getUser: {
+    id: 1,
+    email: 'admin@kumas.dev',
+    name: '홍길동',
+    gender: 'M',
+    imagePath: '',
   },
 };

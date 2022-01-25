@@ -92,7 +92,7 @@ export const updateUser: RequestHandler = async (req, res, next) => {
     });
 
     const hashedPassword = password ? await bcrypt.hash(password, 12) : undefined;
-    const changedUser = await User.update(
+    await User.update(
       {
         email: email || exUser?.email,
         password: hashedPassword || exUser?.password,
@@ -102,7 +102,16 @@ export const updateUser: RequestHandler = async (req, res, next) => {
       },
       { where: { id: req.user!.id } }
     );
-    return res.status(201).json(successResponse(changedUser, '수정 되었습니다.'));
+
+    const getUser = await User.findOne({
+      where: {
+        id: req.user!.id,
+      },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deletedAt'],
+      },
+    });
+    return res.status(201).json(successResponse(getUser!, '수정 되었습니다.'));
   } catch (error) {
     console.error(error);
     next(error);
