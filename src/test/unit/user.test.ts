@@ -138,14 +138,13 @@ describe('updateUser', () => {
     });
   });
 
-  const { exUser, changedUser } = updateUser;
+  const { exUser, getUser } = updateUser;
 
   it('회원정보 수정 후 201을 응답합니다.', async () => {
-    (userModel.findOne as jest.Mock).mockReturnValue(exUser);
-    (userModel.update as jest.Mock).mockReturnValue(changedUser);
+    (userModel.findOne as jest.Mock).mockReturnValueOnce(exUser).mockReturnValueOnce(getUser);
     await controller.updateUser(req, res, next);
     expect(res.statusCode).toBe(201);
-    expect(res._getJSONData()).toStrictEqual(successResponse(changedUser, '수정 되었습니다.'));
+    expect(res._getJSONData()).toStrictEqual(successResponse(getUser, '수정 되었습니다.'));
     expect(res._isEndCalled()).toBeTruthy();
   });
 
