@@ -4,7 +4,7 @@ import multer from 'multer';
 import path from 'path';
 
 import User from '../models/user';
-import { successResponse, failResponse } from '../utils/returnResponse';
+import { successResponse, failResponse } from '../utils/response';
 
 export const getUserById: RequestHandler = async (req, res, next) => {
   const { userId } = req.params;

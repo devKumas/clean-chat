@@ -6,7 +6,7 @@ import userModel from '../../models/user';
 import chatListModel from '../../models/chatList';
 import chatContentModel from '../../models/chatContent';
 import chatUserModel from '../../models/chatUser';
-import { successResponse, failResponse } from '../../utils/returnResponse';
+import { successResponse, failResponse } from '../../utils/response';
 
 import user from '../data/user';
 import { getMessages } from '../data/message';

@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import passport from 'passport';
 
 import User from '../models/user';
-import { successResponse } from '../utils/returnResponse';
+import { successResponse } from '../utils/response';
 
 export const loginUser: RequestHandler = (req, res, next) => {
   passport.authenticate('local', (err: Error, user: User, info: object) => {

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 
 import User from '../models/user';
-import { successResponse, failResponse } from '../utils/returnResponse';
+import { successResponse, failResponse } from '../utils/response';
 
 export const getFriends: RequestHandler = async (req, res, next) => {
   try {

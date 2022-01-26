@@ -5,7 +5,7 @@ import ChatList from '../models/chatList';
 import ChatUser from '../models/chatUser';
 import User from '../models/user';
 
-import { successResponse, failResponse } from '../utils/returnResponse';
+import { successResponse, failResponse } from '../utils/response';
 
 export const getMessages: RequestHandler = async (req, res, next) => {
   const { chatId } = req.params;

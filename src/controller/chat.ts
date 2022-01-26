@@ -6,7 +6,7 @@ import ChatContent from '../models/chatContent';
 import ChatList from '../models/chatList';
 import ChatUser from '../models/chatUser';
 import User from '../models/user';
-import { successResponse, failResponse } from '../utils/returnResponse';
+import { successResponse, failResponse } from '../utils/response';
 
 export const getChats: RequestHandler = async (req, res, next) => {
   try {
