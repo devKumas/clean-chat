@@ -101,6 +101,8 @@ const createServer = http.createServer(app).listen(app.get('port'), () => {
   logger.info(`http Server is started on port ${app.get('port')}`);
 });
 
+socket(createServer, app);
+
 try {
   const option = {
     ca: fs.readFileSync('/etc/letsencrypt/live/kumas.dev/fullchain.pem'),
@@ -114,11 +116,12 @@ try {
       .readFileSync(path.resolve(process.cwd(), '/etc/letsencrypt/live/kumas.dev/cert.pem'), 'utf8')
       .toString(),
   };
-  https.createServer(option, app).listen(app.get('sslPort'), () => {
+
+  const createServer = https.createServer(option, app).listen(app.get('sslPort'), () => {
     logger.info(`https Server is started on port ${app.get('sslPort')}`);
   });
+
+  socket(createServer, app);
 } catch (error) {
   logger.error('https 오류가 발생하였습니다. https 서버는 실행되지 않습니다.');
 }
-
-socket(createServer, app);
