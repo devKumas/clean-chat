@@ -20,6 +20,7 @@ import friendAPIRouter from './routes/friend';
 import chatAPIRouter from './routes/chat';
 import { swaggerUi, specs } from './utils/swagger';
 import { logger, stream } from './utils/winston';
+import socket from './utils/socket';
 
 dotenv.config();
 
@@ -96,7 +97,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500).json(err.message);
 });
 
-http.createServer(app).listen(app.get('port'), () => {
+const createServer = http.createServer(app).listen(app.get('port'), () => {
   logger.info(`http Server is started on port ${app.get('port')}`);
 });
 
@@ -119,3 +120,5 @@ try {
 } catch (error) {
   logger.error('https 오류가 발생하였습니다. https 서버는 실행되지 않습니다.');
 }
+
+socket(createServer, app);

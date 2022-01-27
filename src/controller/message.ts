@@ -6,6 +6,7 @@ import ChatUser from '../models/chatUser';
 import User from '../models/user';
 
 import { successResponse, failResponse } from '../utils/response';
+import { sendSocket } from '../utils/socket';
 
 export const getMessages: RequestHandler = async (req, res, next) => {
   const { chatId } = req.params;
@@ -84,13 +85,34 @@ export const createMessage: RequestHandler = async (req, res, next) => {
       return res.status(403).json(failResponse('권한이 없습니다.'));
     }
 
-    const msg = await ChatContent.create({
+    const creteChatContent = await ChatContent.create({
       content: message,
       ChatListId: chatId,
       UserId: req.user!.id,
     });
 
-    return res.status(201).json(successResponse(msg, '등록 되었습니다.'));
+    const chatUser = await User.findAll({
+      where: { id: { [Op.not]: req.user!.id } },
+      attributes: ['id'],
+      include: [
+        {
+          model: ChatUser,
+          attributes: [],
+          required: true,
+          include: [
+            {
+              model: ChatList,
+              attributes: [],
+              where: { id: chatId },
+            },
+          ],
+        },
+      ],
+    });
+
+    sendSocket(chatUser, { chatId, message }, req.app.get('io'));
+
+    return res.status(201).json(successResponse(creteChatContent, '등록 되었습니다.'));
   } catch (error) {
     console.error(error);
     next(error);
