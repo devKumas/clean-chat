@@ -9,7 +9,6 @@ export default (httpServer: HttpServer, app: Express) => {
       origin: true,
       credentials: true,
     },
-    transports: ['websocket'],
   });
 
   app.set('io', io);
