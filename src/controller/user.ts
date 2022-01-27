@@ -4,6 +4,7 @@ import multer from 'multer';
 import path from 'path';
 
 import User from '../models/user';
+import { addSocket } from '../utils/socket';
 import { successResponse, failResponse } from '../utils/response';
 
 export const getUserById: RequestHandler = async (req, res, next) => {
@@ -140,4 +141,14 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
     console.error(error);
     next(error);
   }
+};
+
+export const createSocket: RequestHandler = async (req, res, next) => {
+  const { socketId } = req.body;
+
+  const result = addSocket(req.user!.id, socketId);
+  if (!result) {
+    return res.status(201).json(failResponse('이미 등록되어 있습니다.'));
+  }
+  return res.status(201).json(successResponse(result, '등록 되었습니다.'));
 };
