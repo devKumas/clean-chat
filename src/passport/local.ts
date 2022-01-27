@@ -2,7 +2,7 @@ import passport from 'passport';
 import bcrypt from 'bcrypt';
 import { Strategy } from 'passport-local';
 import User from '../models/user';
-import { failResponse } from '../utils/returnResponse';
+import { failResponse } from '../utils/response';
 
 export default () => {
   passport.use(

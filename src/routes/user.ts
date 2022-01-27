@@ -7,6 +7,7 @@ import {
   updateUser,
   multerUpload,
   uploadImage,
+  createSocket,
 } from '../controller/user';
 
 /**
@@ -27,6 +28,10 @@ import {
  *        name: "홍길동"
  *        gender: "M"
  *        imagePath: "img/profile.png"
+ *    CreateSocket:
+ *      type: object
+ *      example:
+ *        socketId: "CjBdkJ2gYQBiToZ4AAAB"
  */
 
 const router = express.Router();
@@ -128,5 +133,26 @@ router.patch('/', isLoggedIn, updateUser);
  *          description: "성공"
  */
 router.post('/images', isLoggedIn, multerUpload.single('img'), uploadImage);
+
+/**
+ * @swagger
+ * paths:
+ *  /users/socket:
+ *    post:
+ *      summary: "소켓 정보를 등록합니다."
+ *      tags: [user]
+ *      parameters:
+ *      - in: body
+ *        name: body
+ *        required: true
+ *        schema:
+ *          $ref: "#/definitions/CreateSocket"
+ *      responses:
+ *        "201":
+ *          description: "성공"
+ *        "403":
+ *          description: "실패"
+ */
+router.post('/socket', isLoggedIn, createSocket);
 
 export default router;

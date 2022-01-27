@@ -10,6 +10,7 @@ import { loginUser, logoutUser } from '../controller/login';
  *      example:
  *        email: 'admin@kumas.dev'
  *        password: 'password'
+ *        socketId: 'CjBdkJ2gYQBiToZ4AAAB'
  */
 
 const router = express.Router();

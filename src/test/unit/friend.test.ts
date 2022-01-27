@@ -3,7 +3,7 @@ import httpMocks, { MockRequest, MockResponse } from 'node-mocks-http';
 
 import * as controller from '../../controller/friend';
 import userModel from '../../models/user';
-import { successResponse, failResponse } from '../../utils/returnResponse';
+import { successResponse, failResponse } from '../../utils/response';
 import user from '../data/user';
 import { getFriends } from '../data/friend';
 

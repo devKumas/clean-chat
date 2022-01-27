@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { failResponse } from '../utils/returnResponse';
+import { failResponse } from '../utils/response';
 
 export const isLoggedIn: RequestHandler = (req, res, next) => {
   if (req.isAuthenticated()) {

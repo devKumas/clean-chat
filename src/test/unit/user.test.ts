@@ -3,7 +3,7 @@ import httpMocks, { MockRequest, MockResponse } from 'node-mocks-http';
 
 import * as controller from '../../controller/user';
 import userModel from '../../models/user';
-import { successResponse, failResponse } from '../../utils/returnResponse';
+import { successResponse, failResponse } from '../../utils/response';
 import user, { getUserById, getUserByEmail, createUser, updateUser } from '../data/user';
 
 let req: MockRequest<Request>, res: MockResponse<Response>, next: any;

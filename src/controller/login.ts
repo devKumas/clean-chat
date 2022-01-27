@@ -2,7 +2,8 @@ import { RequestHandler } from 'express';
 import passport from 'passport';
 
 import User from '../models/user';
-import { successResponse } from '../utils/returnResponse';
+import { successResponse } from '../utils/response';
+import { addSocket } from '../utils/socket';
 
 export const loginUser: RequestHandler = (req, res, next) => {
   passport.authenticate('local', (err: Error, user: User, info: object) => {
@@ -26,6 +27,12 @@ export const loginUser: RequestHandler = (req, res, next) => {
             exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt'],
           },
         });
+
+        const { socketId } = req.body;
+        if (socketId) {
+          addSocket(user.id, socketId);
+        }
+
         return res.status(200).json(successResponse(fullUser!, '로그인 되었습니다.'));
       } catch (error) {
         console.error(error);
