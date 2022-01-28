@@ -66,9 +66,22 @@ export const createMessage = {
       id: 1,
     },
   ],
+  createChatContetn: {
+    content: '안녕하세요',
+    ChatListId: 1,
+    UserId: 1,
+  },
   chatUser: [
     {
       id: 1,
     },
   ],
+};
+
+export const removeMessage = {
+  mesage: {
+    User: {
+      id: 1,
+    },
+  },
 };
