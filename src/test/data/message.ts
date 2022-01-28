@@ -59,3 +59,16 @@ export const getMessages = {
     },
   ],
 };
+
+export const createMessage = {
+  chatList: [
+    {
+      id: 1,
+    },
+  ],
+  chatUser: [
+    {
+      id: 1,
+    },
+  ],
+};

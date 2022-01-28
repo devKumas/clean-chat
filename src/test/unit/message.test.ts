@@ -5,16 +5,19 @@ import * as controller from '../../controller/message';
 import userModel from '../../models/user';
 import chatListModel from '../../models/chatList';
 import chatContentModel from '../../models/chatContent';
-import chatUserModel from '../../models/chatUser';
 import { successResponse, failResponse } from '../../utils/response';
 
 import user from '../data/user';
-import { getMessages } from '../data/message';
+
+import { sendSocket } from '../../utils/socket';
+import { getMessages, createMessage } from '../data/message';
 
 let req: MockRequest<Request>, res: MockResponse<Response>, next: any;
 
+jest.mock('../../utils/socket');
 chatListModel.findAll = jest.fn();
 chatContentModel.create = jest.fn();
+userModel.findAll = jest.fn();
 
 beforeEach(() => {
   res = httpMocks.createResponse();
@@ -61,13 +64,16 @@ describe('createMessage', () => {
       params: {
         chatId: 1,
       },
-      query: {
-        messageId: 1,
+      body: {
+        message: '안녕하세요',
+      },
+      app: {
+        get: () => {},
       },
     });
   });
 
-  const { chatList } = getMessages;
+  const { chatList, chatUser } = createMessage;
   it('채팅방에 참여하지 않았다면, 403을 호출합니다.', async () => {
     (chatListModel.findAll as jest.Mock).mockReturnValue([]);
     await controller.createMessage(req, res, next);
@@ -79,10 +85,13 @@ describe('createMessage', () => {
 
   it('채팅방에 참여하였다면 200을 반환합니다', async () => {
     (chatListModel.findAll as jest.Mock).mockReturnValue(chatList);
-    await controller.getMessages(req, res, next);
+    (chatContentModel.create as jest.Mock).mockReturnValue({});
+    (userModel.findAll as jest.Mock).mockReturnValue(chatUser);
+    await controller.createMessage(req, res, next);
 
-    expect(res.statusCode).toBe(200);
-    expect(res._getJSONData()).toStrictEqual(successResponse(chatList, '조회 되었습니다.'));
+    expect(sendSocket).toBeCalled();
+    expect(res.statusCode).toBe(201);
+    expect(res._getJSONData()).toStrictEqual(successResponse({}, '등록 되었습니다.'));
     expect(res._isEndCalled()).toBeTruthy();
   });
 });
