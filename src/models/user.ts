@@ -47,7 +47,7 @@ User.init(
       allowNull: false,
     },
     imagePath: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(100),
       allowNull: false,
     },
   },
